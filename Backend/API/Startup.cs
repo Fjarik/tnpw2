@@ -61,10 +61,7 @@ namespace API
 					.AddRoleManager<RoleManager<Role>>()
 					.AddSignInManager<SignInManager<User>>();
 
-			services.AddAuthorization(x => {
-						x.AddPolicy("test", y => y.RequireUserName("test"));
-						//
-					})
+			services.AddAuthorization()
 					.AddAuthentication(x => {
 						x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 						x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
