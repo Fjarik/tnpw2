@@ -39,7 +39,7 @@ namespace DataAccess.Services
 				return UniversalResult<LoggedUser>.Fail("Username or password is not correct");
 			}
 
-			var result = await _signInManager.PasswordSignInAsync(user, password, true, false);
+			var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
 			if (result.Succeeded) {
 				var u = new LoggedUser(user) {
 					Token = GenerateJwt(user)

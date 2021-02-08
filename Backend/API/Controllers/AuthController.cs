@@ -56,7 +56,7 @@ namespace API.Controllers
 			return res.Content;
 		}
 
-		[HttpGet, HttpPost]
+		[HttpPost]
 		[Route("logout")]
 		[Authorize]
 		public async Task<ActionResult> Logout() {
