@@ -9,10 +9,10 @@ namespace DataAccess.Interfaces
 	public interface IUserService
 	{
 		List<User> GetAll();
-		Task<User> GetAsync(string id);
+		Task<User> GetAsync(Guid id);
 		Task<User> CreateAsync(User user);
-		Task UpdateAsync(string id, User user);
+		Task UpdateAsync(Guid id, User user);
 		Task RemoveAsync(User user);
-		Task RemoveAsync(string id);
+		Task RemoveAsync(Guid id);
 	}
 }

@@ -8,12 +8,17 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DataAccess.Models
 {
-	public class User : MongoUser
+	public class User : MongoUser<Guid>
 	{
-		[Required] public string FirstName { get; set; }
+		[Required]
+		public string FirstName { get; set; }
 
-		[Required] public string LastName { get; set; }
+		[Required]
+		public string LastName { get; set; }
 
-		public ICollection<Contact> Contacts { get; set; }
+		public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+
+		public User() : base() { }
+		public User(string userName) : base(userName) { }
 	}
 }

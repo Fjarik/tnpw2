@@ -6,26 +6,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
 	[Produces("application/json")]
 	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
 		private readonly IUserService _userService;
 
-		public UsersController(IUserService userService)
-		{
+		public UsersController(IUserService userService) {
 			_userService = userService;
 		}
 
 		[HttpGet]
 		[Route("getall")]
-		public ActionResult<List<User>> GetAll()
-		{
-			return Ok(_userService.GetAll());
+		public ActionResult<List<User>> GetAll() {
+			return _userService.GetAll();
+		}
+
+		[HttpGet]
+		[Route("test")]
+		public ActionResult<int> Test() {
+			return 0;
 		}
 	}
 }
