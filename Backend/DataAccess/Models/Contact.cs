@@ -11,7 +11,7 @@ namespace DataAccess.Models
 	{
 		[BsonId]
 		[BsonRepresentation((BsonType.ObjectId))]
-		public string Id { get; set; }
+		public ObjectId Id { get; set; }
 
 		[Required]
 		public string FirstName { get; set; }
