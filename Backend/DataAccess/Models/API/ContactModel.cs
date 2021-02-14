@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DataAccess.Models
+namespace DataAccess.Models.API
 {
-	public class Contact : IValidatableObject
+	public class ContactModel : IValidatableObject
 	{
-		[BsonId]
-		public Guid Id { get; set; }
-
-		public Guid UserId { get; set; }
-
 		[Required]
 		public string FirstName { get; set; }
 
@@ -38,8 +34,23 @@ namespace DataAccess.Models
 			}
 			if (BirthDate != null && BirthDate > DateTime.Now) {
 				yield return new System.ComponentModel.DataAnnotations.ValidationResult(
-					"Birth date must be less then Now!", new[] {nameof(BirthDate)});
+					"Birth date must be before now!", new[] {nameof(BirthDate)});
 			}
+		}
+
+		public Contact ToContact() {
+			return ToContact(Guid.Empty);
+		}
+
+		public Contact ToContact(Guid id) {
+			return new() {
+				Id = id,
+				FirstName = FirstName,
+				LastName = LastName,
+				NickName = NickName,
+				Number = Number,
+				BirthDate = BirthDate
+			};
 		}
 	}
 }

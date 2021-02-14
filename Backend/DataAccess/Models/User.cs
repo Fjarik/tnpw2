@@ -16,8 +16,6 @@ namespace DataAccess.Models
 		[Required]
 		public string LastName { get; set; }
 
-		public ICollection<ObjectId> ContactIds { get; set; } = new List<ObjectId>();
-
 		public User() : base() { }
 		public User(string userName) : base(userName) { }
 	}

@@ -18,14 +18,17 @@ namespace DataAccess.Services
 	public class AuthService : IAuthService
 	{
 		private readonly UserManager<User> _userManager;
+		private readonly RoleManager<Role> _roleManager;
 		private readonly SignInManager<User> _signInManager;
+
 		private readonly JwtSettings _jwtSettings;
 
 		public AuthService(UserManager<User> userManager,
 						   IOptions<Settings.Settings> settings,
-						   SignInManager<User> signInManager) {
+						   SignInManager<User> signInManager, RoleManager<Role> roleManager) {
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_roleManager = roleManager;
 			_jwtSettings = settings.Value.Jwt;
 		}
 
@@ -73,6 +76,17 @@ namespace DataAccess.Services
 			return UniversalResult<bool>.Fail(errors);
 		}
 
+		public async Task<UniversalResult<User>> GetCurrentUserAsync(ClaimsPrincipal principal) {
+			if (principal == null) {
+				return UniversalResult<User>.Fail("User principal is null");
+			}
+			var user = await _userManager.GetUserAsync(principal);
+			if (user == null) {
+				return UniversalResult<User>.Fail("User not found");
+			}
+			return UniversalResult<User>.Ok(user);
+		}
+
 		private string GenerateJwt(User user) {
 			var claims = new List<Claim> {
 				new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -84,7 +98,7 @@ namespace DataAccess.Services
 			var roleClaims = user.Roles.Select(r => new Claim(ClaimTypes.Role, r));
 			claims.AddRange(roleClaims);
 
-			claims.AddRange(user.Claims.Select(x=> x.ToClaim()));
+			claims.AddRange(user.Claims.Select(x => x.ToClaim()));
 
 			var creds = new SigningCredentials(_jwtSettings.SecretKey, SecurityAlgorithms.HmacSha256);
 			var expires = DateTime.Now.AddDays(Convert.ToDouble(_jwtSettings.ExpirationInDays));

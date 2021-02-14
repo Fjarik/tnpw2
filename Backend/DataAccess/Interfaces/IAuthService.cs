@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.InputModels;
@@ -15,5 +16,7 @@ namespace DataAccess.Interfaces
 		Task<UniversalResult<LoggedUser>> LoginAsync(string username, string password);
 
 		Task<UniversalResult<bool>> RegisterAsync(UserRegisterModel model);
+
+		Task<UniversalResult<User>> GetCurrentUserAsync(ClaimsPrincipal principal);
 	}
 }

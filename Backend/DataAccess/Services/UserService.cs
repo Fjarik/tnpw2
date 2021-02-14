@@ -5,17 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace DataAccess.Services
 {
-	public class UserService : IUserService
+	public class UserService : BaseService, IUserService
 	{
 		private readonly IMongoCollection<User> _users;
+		private readonly ILogger<UserService> _logger;
 		private readonly UserManager<User> _userManager;
 
-		public UserService(UserManager<User> userManager, IMongoCollection<User> users) {
+		public UserService(ILogger<UserService> logger,
+						   IAuthService authService,
+						   IHttpContextAccessor httpContextAccessor,
+						   UserManager<User> userManager,
+						   IMongoCollection<User> users) : base(logger, authService, httpContextAccessor) {
+			_logger = logger;
 			_userManager = userManager;
 			_users = users;
 		}

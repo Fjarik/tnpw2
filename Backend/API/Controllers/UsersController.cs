@@ -12,7 +12,7 @@ namespace API.Controllers
 {
 	[Produces("application/json")]
 	[Route("api/[controller]")]
-	[Authorize]
+	[Authorize(Roles = "admin")]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
@@ -26,12 +26,6 @@ namespace API.Controllers
 		[Route("getall")]
 		public ActionResult<List<User>> GetAll() {
 			return _userService.GetAll();
-		}
-
-		[HttpGet]
-		[Route("test")]
-		public ActionResult<int> Test() {
-			return 0;
 		}
 	}
 }

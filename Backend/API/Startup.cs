@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using API.Policy;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
+using AspNetCore.Identity.Mongo.Mongo;
 using DataAccess;
 using DataAccess.Interfaces;
 using DataAccess.Models;
@@ -25,6 +26,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace API
 {
@@ -41,6 +43,8 @@ namespace API
 			services.Configure<Settings>(Configuration.GetSection(nameof(Settings)));
 
 			var settings = Configuration.GetSection(nameof(Settings)).Get<Settings>();
+
+			services.AddHttpContextAccessor();
 
 			services.AddIdentityMongoDbProvider<User, Role, Guid>(x => {
 																	  x.Password.RequireDigit = false;
@@ -60,6 +64,10 @@ namespace API
 					.AddUserManager<UserManager<User>>()
 					.AddRoleManager<RoleManager<Role>>()
 					.AddSignInManager<SignInManager<User>>();
+
+			var roleCollection =
+				MongoUtil.FromConnectionString<Contact>(settings.Database.ConnectionString, "Contacts");
+			services.AddSingleton(x => roleCollection);
 
 			services.AddAuthorization()
 					.AddAuthentication(x => {
@@ -92,6 +100,7 @@ namespace API
 
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IContactService, ContactService>();
 
 			services.AddControllers()
 					.AddNewtonsoftJson(x => x.UseMemberCasing());
