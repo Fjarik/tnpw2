@@ -6,15 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.System" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Core" Version="5.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.1" />
     <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 

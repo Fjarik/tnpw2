@@ -22,11 +22,14 @@ using DataAccess.Services;
 using DataAccess.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
+using HealthChecks.UI.Core;
 
 namespace API
 {
@@ -46,6 +49,8 @@ namespace API
 
 			services.AddHttpContextAccessor();
 
+			var conString = Configuration.GetConnectionString(settings.Database.ConnectionStringName);
+
 			services.AddIdentityMongoDbProvider<User, Role, Guid>(x => {
 																	  x.Password.RequireDigit = false;
 																	  x.Password.RequireLowercase = false;
@@ -55,8 +60,7 @@ namespace API
 																	  x.Password.RequiredLength = 3;
 																  },
 																  mongo => {
-																	  mongo.ConnectionString =
-																		  settings.Database.ConnectionString;
+																	  mongo.ConnectionString = conString;
 																	  mongo.UsersCollection =
 																		  settings.Database.UsersCollectionName;
 																  })
@@ -65,8 +69,17 @@ namespace API
 					.AddRoleManager<RoleManager<Role>>()
 					.AddSignInManager<SignInManager<User>>();
 
+			services.AddHealthChecks()
+					.AddMongoDb(conString);
+
+			services.AddHealthChecksUI(setup => {
+						setup.SetApiMaxActiveRequests(1);
+						setup.SetEvaluationTimeInSeconds(5);
+					})
+					.AddInMemoryStorage();
+
 			var roleCollection =
-				MongoUtil.FromConnectionString<Contact>(settings.Database.ConnectionString, "Contacts");
+				MongoUtil.FromConnectionString<Contact>(conString, settings.Database.ContactsCollectionName);
 			services.AddSingleton(x => roleCollection);
 
 			services.AddAuthorization()
@@ -148,7 +161,20 @@ namespace API
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+			app.UseEndpoints(endpoints => {
+				endpoints.MapHealthChecks("/health", new HealthCheckOptions {
+					AllowCachingResponses = true,
+					ResultStatusCodes = {
+						[HealthStatus.Healthy] = StatusCodes.Status200OK,
+						[HealthStatus.Degraded] = StatusCodes.Status400BadRequest,
+						[HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+					}
+				});
+
+				endpoints.MapHealthChecksUI();
+
+				endpoints.MapControllers();
+			});
 		}
 	}
 }
