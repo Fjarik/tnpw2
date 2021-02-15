@@ -8,11 +8,11 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: contacts 
-  working-directory: ./Backend
+  WORKING_DIRECTORY: './Backend'
 
 defaults:
   run:
-    working-directory: ${{env.working-directory}}
+    working-directory: ${{env.WORKING_DIRECTORY}}
 
 jobs:
   build:
