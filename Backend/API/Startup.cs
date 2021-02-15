@@ -93,7 +93,7 @@ namespace API
 						x.TokenValidationParameters = new TokenValidationParameters {
 							ValidIssuer = settings.Jwt.Issuer,
 							ValidAudience = settings.Jwt.Issuer,
-							IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Jwt.Secret)),
+							IssuerSigningKey = settings.Jwt.SecretKey,
 							ClockSkew = TimeSpan.Zero,
 						};
 					});

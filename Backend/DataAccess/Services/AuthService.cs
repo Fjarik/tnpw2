@@ -9,6 +9,7 @@ using DataAccess.InputModels;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Settings;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,17 +19,18 @@ namespace DataAccess.Services
 	public class AuthService : IAuthService
 	{
 		private readonly UserManager<User> _userManager;
-		private readonly RoleManager<Role> _roleManager;
 		private readonly SignInManager<User> _signInManager;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		private readonly JwtSettings _jwtSettings;
 
 		public AuthService(UserManager<User> userManager,
 						   IOptions<Settings.Settings> settings,
-						   SignInManager<User> signInManager, RoleManager<Role> roleManager) {
+						   SignInManager<User> signInManager,
+						   IHttpContextAccessor httpContextAccessor) {
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_roleManager = roleManager;
+			_httpContextAccessor = httpContextAccessor;
 			_jwtSettings = settings.Value.Jwt;
 		}
 
@@ -59,6 +61,8 @@ namespace DataAccess.Services
 				LastName = model.LastName,
 				Email = model.Email,
 				UserName = model.UserName,
+				Created = DateTime.Now.ToUniversalTime(),
+				RegistrationIP = _httpContextAccessor?.HttpContext?.Connection?.RemoteIpAddress?.ToString(),
 			};
 
 			var errors = new List<string>();

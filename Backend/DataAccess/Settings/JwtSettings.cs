@@ -15,6 +15,6 @@ namespace DataAccess.Settings
 
 		public int ExpirationInDays { get; set; }
 
-		public SymmetricSecurityKey SecretKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Secret));
+		public SymmetricSecurityKey SecretKey => new(Encoding.UTF8.GetBytes(this.Secret));
 	}
 }

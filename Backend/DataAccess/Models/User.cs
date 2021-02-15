@@ -16,6 +16,11 @@ namespace DataAccess.Models
 		[Required]
 		public string LastName { get; set; }
 
+		[BsonRepresentation(BsonType.DateTime)]
+		public DateTime Created { get; set; }
+
+		public string RegistrationIP { get; set; }
+
 		public User() : base() { }
 		public User(string userName) : base(userName) { }
 	}

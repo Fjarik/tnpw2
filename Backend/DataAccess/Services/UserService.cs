@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using DataAccess.Models.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -52,6 +53,14 @@ namespace DataAccess.Services
 
 		public async Task RemoveAsync(Guid id) {
 			await _users.DeleteOneAsync(x => x.Id == id);
+		}
+
+		public async Task<UserModel> GetLoggedUserAsync() {
+			var user = await GetCurrentUserAsync();
+			if (user == null) {
+				return null;
+			}
+			return new UserModel(user);
 		}
 	}
 }
