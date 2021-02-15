@@ -75,6 +75,30 @@ namespace DataAccess.Services
 			}
 		}
 
+		public async Task<UniversalResult<bool>> UpdatePictureAsync(IFormFile file, Guid contactId) {
+			await EnsureManagerAsync();
+
+			try {
+				var result = await _manager.UpdatePictureAsync(file, contactId);
+
+				return UniversalResult<bool>.Ok(result);
+			} catch (Exception ex) {
+				return UniversalResult<bool>.Fail(ex.Message);
+			}
+		}
+
+		public async Task<UniversalResult<bool>> DeletePictureAsync(Guid contactId) {
+			await EnsureManagerAsync();
+
+			try {
+				var result = await _manager.DeletePictureAsync(contactId);
+
+				return UniversalResult<bool>.Ok(result);
+			} catch (Exception ex) {
+				return UniversalResult<bool>.Fail(ex.Message);
+			}
+		}
+
 		private async Task EnsureManagerAsync() {
 			if (_manager == null) {
 				var user = await GetCurrentUserAsync();

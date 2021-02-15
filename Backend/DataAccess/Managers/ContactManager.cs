@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Extensions;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -81,6 +84,72 @@ namespace DataAccess.Managers
 
 			_logger.LogInformation("ContactManager.DeleteAsync()............. Done");
 			return res.DeletedCount == 1;
+		}
+
+		public async Task<bool> UpdatePictureAsync(IFormFile file, Guid contactId) {
+			_logger.LogInformation("ContactManager.UpdatePictureAsync().............");
+			if (file == null) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(file));
+			}
+			if (!file.IsPicture()) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentOutOfRangeException(nameof(file), "Give file is not a supported picture.");
+			}
+			if (file.Length < 1) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(file), "Invalid file length.");
+			}
+			if (file.Length > 1024) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentOutOfRangeException(nameof(file), "File exceeded maximum size.");
+			}
+
+			var type = file.ContentType;
+			var bytes = await file.GetBytesAsync();
+			var base64 = Convert.ToBase64String(bytes);
+
+			var image = new Image(base64, type);
+
+			var res = await UpdatePictureAsync(image, contactId);
+
+			_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+			return res;
+		}
+
+		private async Task<bool> UpdatePictureAsync(Image image, Guid contactId) {
+			_logger.LogInformation("ContactManager.UpdatePictureAsync().............");
+			if (image == null) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(image));
+			}
+			if (contactId == Guid.Empty) {
+				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(contactId));
+			}
+			var update = Builders<Contact>.Update.Set(x => x.Image, image);
+			var res = await _contacts.UpdateOneAsync(x => x.Id == contactId && x.UserId == _currentUser.Id, update);
+
+			_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
+			return res.ModifiedCount == 1;
+		}
+
+		public async Task<bool> DeletePictureAsync(Guid contactId) {
+			_logger.LogInformation("ContactManager.DeletePictureAsync().............");
+			if (contactId == Guid.Empty) {
+				_logger.LogInformation("ContactManager.DeletePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(contactId));
+			}
+			var contact = await GetByIdAsync(contactId);
+			if (contact == null) {
+				_logger.LogInformation("ContactManager.DeletePictureAsync()............. Done");
+				throw new ArgumentNullException(nameof(contact));
+			}
+			var update = Builders<Contact>.Update.Set(x => x.Image, null);
+			var res = await _contacts.UpdateOneAsync(x => x.Id == contactId && x.UserId == _currentUser.Id, update);
+
+			_logger.LogInformation("ContactManager.DeletePictureAsync()............. Done");
+			return res.ModifiedCount == 1;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using MongoDB.Bson;
 
 namespace DataAccess.Interfaces
@@ -14,5 +15,7 @@ namespace DataAccess.Interfaces
 		Task<UniversalResult<List<Contact>>> GetUserContactsAsync();
 		Task<UniversalResult<Contact>> CreateOrUpdateAsync(Contact contact);
 		Task<UniversalResult<bool>> DeleteAsync(Guid contactId);
+		Task<UniversalResult<bool>> UpdatePictureAsync(IFormFile file, Guid contactId);
+		Task<UniversalResult<bool>> DeletePictureAsync(Guid contactId);
 	}
 }

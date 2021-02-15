@@ -40,7 +40,7 @@ namespace API.Controllers
 			return new ApiActionResult<bool>(res);
 		}
 
-		[HttpPost, HttpPatch]
+		[HttpPost]
 		[Route("create")]
 		public async Task<ApiActionResult<Contact>> CreateAsync(ContactModel contact) {
 			var res = await _contactService.CreateOrUpdateAsync(contact.ToContact());
@@ -54,6 +54,23 @@ namespace API.Controllers
 			var res = await _contactService.CreateOrUpdateAsync(contact.ToContact(contactId));
 
 			return new ApiActionResult<Contact>(res);
+		}
+
+		[HttpPost, HttpPut]
+		[Route("photo")]
+		public async Task<ApiActionResult<bool>> UpdatePictureAsync([FromForm]IFormFile picture, Guid contactId) {
+			var res = await _contactService.UpdatePictureAsync(picture, contactId);
+
+			return new ApiActionResult<bool>(res);
+		}
+
+		[HttpPost, HttpDelete]
+		[Route("delphoto")]
+		public async Task<ApiActionResult<bool>> DeletePictureAsync(Guid contactId)
+		{
+			var res = await _contactService.DeletePictureAsync(contactId);
+
+			return new ApiActionResult<bool>(res);
 		}
 	}
 }

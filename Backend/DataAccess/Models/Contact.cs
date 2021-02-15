@@ -26,7 +26,10 @@ namespace DataAccess.Models
 		public string Number { get; set; }
 
 		[BsonRepresentation(BsonType.DateTime)]
+		[BsonDateTimeOptions(DateOnly = true)]
 		public DateTime? BirthDate { get; set; }
+
+		public Image Image { get; set; }
 
 		public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(
 			ValidationContext validationContext) {
