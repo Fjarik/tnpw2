@@ -13,6 +13,7 @@ namespace API.Controllers
 {
 	[Produces("application/json")]
 	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
