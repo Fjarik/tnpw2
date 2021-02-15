@@ -34,7 +34,7 @@ namespace API.Controllers
 
 		[HttpDelete, HttpDelete]
 		[Route("delete")]
-		public async Task<ApiActionResult<bool>> DeleteAsync([FromBody] Guid id) {
+		public async Task<ApiActionResult<bool>> DeleteAsync([FromForm] Guid id) {
 			var res = await _contactService.DeleteAsync(id);
 
 			return new ApiActionResult<bool>(res);
@@ -51,7 +51,7 @@ namespace API.Controllers
 		[HttpPost, HttpPut]
 		[Route("update")]
 		public async Task<ApiActionResult<Contact>> UpdateAsync([FromBody] ContactModel contact,
-																[FromBody] Guid contactId) {
+																Guid contactId) {
 			var res = await _contactService.CreateOrUpdateAsync(contact.ToContact(contactId));
 
 			return new ApiActionResult<Contact>(res);
@@ -60,7 +60,7 @@ namespace API.Controllers
 		[HttpPost, HttpPut]
 		[Route("photo")]
 		public async Task<ApiActionResult<bool>> UpdatePictureAsync([FromForm] IFormFile picture,
-																	[FromBody] Guid contactId) {
+																	Guid contactId) {
 			var res = await _contactService.UpdatePictureAsync(picture, contactId);
 
 			return new ApiActionResult<bool>(res);
@@ -68,7 +68,7 @@ namespace API.Controllers
 
 		[HttpPost, HttpDelete]
 		[Route("delphoto")]
-		public async Task<ApiActionResult<bool>> DeletePictureAsync([FromBody] Guid contactId) {
+		public async Task<ApiActionResult<bool>> DeletePictureAsync([FromForm] Guid contactId) {
 			var res = await _contactService.DeletePictureAsync(contactId);
 
 			return new ApiActionResult<bool>(res);

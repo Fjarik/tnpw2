@@ -40,7 +40,7 @@ namespace API.Controllers
 
 		[HttpPost]
 		[Route("login")]
-		public async Task<ActionResult<LoggedUser>> Login([FromBody] string username, [FromBody] string password) {
+		public async Task<ActionResult<LoggedUser>> Login([FromForm] string username, [FromForm] string password) {
 			if (string.IsNullOrWhiteSpace(username)) {
 				return BadRequest("Username cannot be empty");
 			}
