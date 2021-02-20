@@ -1,0 +1,46 @@
+{
+  "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
+  "parserOptions": {
+    "ecmaVersion": 2021, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module", // Allows for the use of imports
+    "ecmaFeatures": {
+      "jsx": true // Allows for the parsing of JSX
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
+    }
+  },
+  "extends": [
+    "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
+    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+    "plugin:react-hooks/recommended" // React hooks rules
+  ],
+  "rules": {
+    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
+    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    "react/prop-types": "off",
+    // No need to import React when using Next.js
+    "react/react-in-jsx-scope": "off",
+    // This rule is not compatible with Next.js"s <Link /> components
+    "jsx-a11y/anchor-is-valid": "off",
+    // Why would you want unused vars?
+    "@typescript-eslint/no-unused-vars": [
+      "error"
+    ],
+    // I suggest this setting for requiring return types on functions only where useful
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn",
+      {
+        "allowExpressions": true,
+        "allowConciseArrowFunctionExpressionsStartingWithVoid": true
+      }
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": "error"
+  }
+}

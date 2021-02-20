@@ -35,6 +35,8 @@ namespace API
 {
 	public class Startup
 	{
+		private const string CorsPolicyName = "_apiSpecificOrigins";
+
 		public Startup(IConfiguration configuration) {
 			Configuration = configuration;
 		}
@@ -80,7 +82,7 @@ namespace API
 
 			var roleCollection =
 				MongoUtil.FromConnectionString<Contact>(conString, settings.Database.ContactsCollectionName);
-			services.AddSingleton(x => roleCollection);
+			services.AddSingleton(_ => roleCollection);
 
 			services.AddAuthorization()
 					.AddAuthentication(x => {
@@ -114,6 +116,17 @@ namespace API
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IContactService, ContactService>();
+
+			services.AddCors(x => {
+				x.AddPolicy(CorsPolicyName,
+							builder => {
+								builder.WithOrigins("http://localhost:3000"
+										   /*, ""*/) // TODO: Add production url
+									   .AllowAnyHeader()
+									   .AllowAnyMethod()
+									   .AllowCredentials();
+							});
+			});
 
 			services.AddControllers()
 					.AddNewtonsoftJson(x => x.UseMemberCasing());
@@ -157,6 +170,8 @@ namespace API
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseCors(CorsPolicyName);
 
 			app.UseAuthentication();
 			app.UseAuthorization();

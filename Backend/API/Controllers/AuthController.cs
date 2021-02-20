@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Models;
 using DataAccess.InputModels;
 using DataAccess.Interfaces;
 using DataAccess.Models;
@@ -40,15 +41,18 @@ namespace API.Controllers
 
 		[HttpPost]
 		[Route("login")]
-		public async Task<ActionResult<LoggedUser>> Login([FromForm] string username, [FromForm] string password) {
-			if (string.IsNullOrWhiteSpace(username)) {
+		public async Task<ActionResult<LoggedUser>> Login([FromBody] LoginInput login) {
+			if (login == null) {
+				return BadRequest("Input is empty");
+			}
+			if (string.IsNullOrWhiteSpace(login.Username)) {
 				return BadRequest("Username cannot be empty");
 			}
-			if (string.IsNullOrWhiteSpace(password)) {
+			if (string.IsNullOrWhiteSpace(login.Password)) {
 				return BadRequest("Password cannot be empty");
 			}
 
-			var res = await _authService.LoginAsync(username, password);
+			var res = await _authService.LoginAsync(login.Username, login.Password);
 			if (!res.Success) {
 				return BadRequest(res.Errors);
 			}

@@ -34,7 +34,7 @@ namespace API.Controllers
 
 		[HttpDelete, HttpDelete]
 		[Route("delete")]
-		public async Task<ApiActionResult<bool>> DeleteAsync([FromForm] Guid id) {
+		public async Task<ApiActionResult<bool>> DeleteAsync(Guid id) {
 			var res = await _contactService.DeleteAsync(id);
 
 			return new ApiActionResult<bool>(res);
