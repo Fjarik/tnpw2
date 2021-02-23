@@ -44,10 +44,8 @@ export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | nul
         return null;
     }
     try {
-        const content = await res.json();
-
         if (res.status == 200) {
-            return content as ILoginResult;
+            return await res.json() as ILoginResult;
         }
     } catch {
 
