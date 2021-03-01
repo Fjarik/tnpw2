@@ -1,20 +1,13 @@
 import { GetServerSideProps, NextPage } from "next";
-import { useSession } from "next-auth/client";
 import { withAuthServerSideProps } from "../../components/auth/AuthWrapper";
 import Layout from "../../components/Layout/Layout";
+import Profile from "../../components/User/Profile";
 
 const ProfilePage: NextPage = () => {
-    const [session, loading] = useSession();
-
-    if (loading || !session) {
-        return <></>;
-    }
-
-    const { user } = session;
 
     return (
         <Layout title="User Profile">
-            {JSON.stringify(user)}
+            <Profile />
         </Layout>
     );
 };

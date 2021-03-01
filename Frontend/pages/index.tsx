@@ -1,25 +1,20 @@
 import { GetServerSideProps, NextPage } from "next";
-import { signOut, useSession } from "next-auth/client";
 import { withAuthServerSideProps } from "../components/auth/AuthWrapper";
+import Contacts from "../components/Contacts/Contacts";
 import Layout from "../components/Layout/Layout";
-import { Button } from "@material-ui/core";
+import { IContact } from "../interfaces/IContact";
 
 const IndexPage: NextPage = ({ }) => {
-    const [session, loading] = useSession();
-
-    if (loading || !session) {
-        return <></>;
-    }
+    const contacts: IContact[] = [
+        { id: "0", firstName: "Test", lastName: "Test", nickName: "Test", email: "test@test.com", number: "123456789", birthDate: "2021-03-01" },
+        { id: "1", firstName: "Test", lastName: "Test", nickName: "Test", email: "test@test.com", number: "123456789", birthDate: "2021-03-01" },
+        { id: "2", firstName: "Test", lastName: "Test", nickName: "Test", email: "test@test.com", number: "123456789", birthDate: "2021-03-01" },
+    ];
 
     return (
         <Layout title="Home">
-            <h1>Hello Next.js 👋</h1>
-            <p>
 
-            </p>
-            <p>Signed in as {JSON.stringify(session.user)}</p>
-
-            <Button variant="contained" onClick={() => signOut()}>Sign out</Button>
+            <Contacts contacts={contacts} />
         </Layout>
     );
 };
