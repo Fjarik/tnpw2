@@ -1,17 +1,14 @@
-import { MouseEvent, FunctionComponent, ReactNode, useState } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import Head from "next/head";
-import { AppBar, Toolbar, IconButton, makeStyles, createStyles, Theme, Typography, Button } from "@material-ui/core";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import { makeStyles, createStyles } from "@material-ui/core";
 import { useSession } from "next-auth/client";
-import ThemeChangeButton from "../Themes/ThemeChangeButton";
-import UserMenu from "./UserMenu";
-import { useRouter } from "next/router";
+import Footer from "./Footer";
+import MainAppBar from "./MainAppBar";
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  title: {
-    marginRight: theme.spacing(2),
-    flexGrow: 1,
-  }
+const useStyles = makeStyles(() => createStyles({
+  main: {
+    minHeight: "calc(100vh - 58px - 64px)"
+  },
 }),
 );
 
@@ -22,21 +19,7 @@ type Props = {
 
 const Layout: FunctionComponent<Props> = ({ children, title }: Props) => {
   const classes = useStyles();
-  const router = useRouter();
   const [session, loading] = useSession();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const openUserMenu = (event: MouseEvent<HTMLButtonElement>): void => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const closeUserMenu = (): void => {
-    setAnchorEl(null);
-  };
-
-  const gotoMainPage = (): void => {
-    router.push("/");
-  };
 
   if (loading || !session) {
     return <></>;
@@ -52,34 +35,11 @@ const Layout: FunctionComponent<Props> = ({ children, title }: Props) => {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </Head>
 
-      <AppBar position="static">
-        <Toolbar>
-          <div className={classes.title}>
-            <Button onClick={gotoMainPage} color="inherit" >
-              <Typography variant="h6">
-                Contacts
-              </Typography>
-            </Button>
-          </div>
-          <div>
-            <ThemeChangeButton />
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={openUserMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <UserMenu anchorEl={anchorEl} onClose={closeUserMenu} />
-          </div>
-        </Toolbar>
-      </AppBar>
-      {children}
-      <footer>
-        <hr />
-      </footer>
+      <MainAppBar />
+      <main className={classes.main}>
+        {children}
+      </main>
+      <Footer />
     </div>
   );
 };
