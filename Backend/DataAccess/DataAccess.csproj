@@ -7,8 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.0.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.11.6" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+    <PackageReference Include="MongoDB.Bson" Version="2.12.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.12.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 
