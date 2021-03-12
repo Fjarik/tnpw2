@@ -154,6 +154,7 @@ namespace API
 						new List<string>()
 					}
 				});
+				x.EnableAnnotations();
 			});
 		}
 
@@ -165,7 +166,10 @@ namespace API
 
 			app.UseSwagger();
 
-			app.UseSwaggerUI(x => { x.SwaggerEndpoint("../swagger/v1/swagger.json", "Main API v1"); });
+			app.UseSwaggerUI(x => {
+				x.SwaggerEndpoint("../swagger/v1/swagger.json", "Main API v1");
+				//x.RoutePrefix = string.Empty;
+			});
 
 			app.UseHttpsRedirection();
 

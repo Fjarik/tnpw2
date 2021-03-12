@@ -3,6 +3,7 @@ import { FunctionComponent } from "react";
 import { IContact } from "../../interfaces/IContact";
 import { Formik, FormikHelpers, Form } from "formik";
 import ContactEditForm from "./ContactEditForm";
+// import { Client } from "../../services/generated/apiService";
 import * as yup from "yup";
 
 
@@ -33,6 +34,9 @@ const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSa
         console.log(formikHelpers);
 
         const res = await validationSchema.isValid(values);
+
+        // const client = new Client();
+
         console.log(res);
         onSave(values);
     };

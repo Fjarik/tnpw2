@@ -9,6 +9,7 @@ using DataAccess.InputModels;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
 {
@@ -26,6 +27,9 @@ namespace API.Controllers
 
 		[HttpPost]
 		[Route("register")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[SwaggerResponse(200, Type = typeof(bool))]
 		public async Task<ActionResult<bool>> Register([FromBody] UserRegisterModel model) {
 			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
@@ -41,6 +45,9 @@ namespace API.Controllers
 
 		[HttpPost]
 		[Route("login")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[SwaggerResponse(200, Type = typeof(LoggedUser))]
 		public async Task<ActionResult<LoggedUser>> Login([FromBody] LoginInput login) {
 			if (login == null) {
 				return BadRequest("Input is empty");
@@ -60,9 +67,11 @@ namespace API.Controllers
 			return res.Content;
 		}
 
+		[Authorize]
 		[HttpPost]
 		[Route("logout")]
-		[Authorize]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[SwaggerResponse(200, Type = typeof(bool))]
 		public async Task<ActionResult> Logout() {
 			await _authService.LogoutAsync();
 			return Ok();

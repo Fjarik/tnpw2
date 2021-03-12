@@ -61,11 +61,23 @@ namespace DataAccess.Managers
 				throw res.Exception;
 			}
 
+
 			if (contact.Id == Guid.Empty) {
 				contact.UserId = _currentUser.Id;
 
 				await _contacts.InsertOneAsync(contact);
 			} else {
+				var original = await GetByIdAsync(contact.Id);
+				if (original == null) {
+					throw new ArgumentNullException(nameof(original), "Original contact not found");
+				}
+				if (original.UserId != _currentUser.Id) {
+					throw new UnauthorizedAccessException();
+				}
+
+				contact.UserId = _currentUser.Id;
+				contact.Image = original.Image;
+
 				await _contacts.ReplaceOneAsync(x => x.Id == contact.Id, contact);
 			}
 

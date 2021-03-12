@@ -11,6 +11,8 @@ namespace DataAccess.Models.API
 {
 	public class ContactModel : IValidatableObject
 	{
+		public Guid? Id { get; set; }
+
 		[Required]
 		public string FirstName { get; set; }
 
@@ -39,12 +41,8 @@ namespace DataAccess.Models.API
 		}
 
 		public Contact ToContact() {
-			return ToContact(Guid.Empty);
-		}
-
-		public Contact ToContact(Guid id) {
 			return new() {
-				Id = id,
+				Id = Id ?? Guid.Empty,
 				FirstName = FirstName,
 				LastName = LastName,
 				NickName = NickName,
