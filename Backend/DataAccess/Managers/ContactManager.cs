@@ -22,12 +22,11 @@ namespace DataAccess.Managers
 		private readonly ContactValidator _contactValidator;
 		private readonly User _currentUser;
 
-		public ContactManager(ILogger logger, IMongoCollection<Contact> contacts, User currentUser,
-							  ContactValidator contactValidator) {
+		public ContactManager(ILogger logger, IMongoCollection<Contact> contacts, User currentUser) {
 			_logger = logger;
 			_contacts = contacts;
 			_currentUser = currentUser ?? throw new UnauthorizedAccessException();
-			_contactValidator = contactValidator;
+			_contactValidator = new ContactValidator();
 		}
 
 		public async Task<Contact> GetByIdAsync(Guid contactId) {
@@ -56,23 +55,24 @@ namespace DataAccess.Managers
 		public async Task<Contact> CreateOrUpdateAsync(Contact contact) {
 			_logger.LogInformation("ContactManager.CreateOrUpdateAsync().............");
 
-			var res = await _contactValidator.ValidateAsync(contact);
-			if (!res.IsSuccess) {
-				throw res.Exception;
+			if (contact == null) {
+				throw new ArgumentNullException(nameof(contact));
 			}
 
-
 			if (contact.Id == Guid.Empty) {
+				var res = _contactValidator.Validate(contact);
+				if (!res.IsSuccess) {
+					throw res.Exception;
+				}
 				contact.UserId = _currentUser.Id;
 
 				await _contacts.InsertOneAsync(contact);
 			} else {
 				var original = await GetByIdAsync(contact.Id);
-				if (original == null) {
-					throw new ArgumentNullException(nameof(original), "Original contact not found");
-				}
-				if (original.UserId != _currentUser.Id) {
-					throw new UnauthorizedAccessException();
+
+				var res = _contactValidator.Validate(contact, original, _currentUser.Id);
+				if (!res.IsSuccess) {
+					throw res.Exception;
 				}
 
 				contact.UserId = _currentUser.Id;

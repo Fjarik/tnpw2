@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DataAccess.Interfaces;
 using DataAccess.Managers;
 using DataAccess.Models;
-using DataAccess.Validators;
 using DnsClient.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -102,7 +101,7 @@ namespace DataAccess.Services
 		private async Task EnsureManagerAsync() {
 			if (_manager == null) {
 				var user = await GetCurrentUserAsync();
-				_manager = new ContactManager(_logger, _contacts, user, new ContactValidator(this));
+				_manager = new ContactManager(_logger, _contacts, user);
 			}
 		}
 	}

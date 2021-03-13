@@ -11,13 +11,13 @@ namespace API.Models
 {
 	public class ApiResult<T>
 	{
-		[JsonProperty("Content", NullValueHandling = NullValueHandling.Include)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Include)]
 		public T Content { get; }
 
 		[JsonIgnore]
-		public int StatusCode { get; }
+		internal int StatusCode { get; }
 
-		[JsonProperty("Errors", NullValueHandling = NullValueHandling.Include)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Include)]
 		public List<string> Errors { get; }
 
 		public ApiResult(UniversalResult<T> res) {

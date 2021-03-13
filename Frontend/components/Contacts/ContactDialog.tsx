@@ -1,10 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { FunctionComponent } from "react";
-import { IContact } from "../../interfaces/IContact";
-import { Formik, FormikHelpers, Form } from "formik";
+import { Formik, Form } from "formik";
 import ContactEditForm from "./ContactEditForm";
-// import { Client } from "../../services/generated/apiService";
 import * as yup from "yup";
+import { Contact } from "../../services/generated";
+import { ContactModel, ContactsApiInterface } from "../../services/generated";
 
 
 const validationSchema = yup.object({
@@ -18,27 +18,35 @@ const validationSchema = yup.object({
 
 interface IProps {
     open: boolean;
-    contact: IContact;
+    contact: Contact;
     onClose: () => void;
-    onSave: (contact: IContact) => Promise<void>;
+    onSave: (contact: Contact) => Promise<void>;
+    client: ContactsApiInterface;
 }
 
-const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSave }) => {
+const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSave, client }) => {
+
+    contact.nickName = contact.nickName ?? "";
+    contact.number = contact.number ?? "";
 
     const handleClose = (): void => {
         onClose();
     };
 
-    const handleSubmit = async (values: IContact, formikHelpers: FormikHelpers<IContact>): Promise<void> => {
-        console.log(values);
-        console.log(formikHelpers);
+    const handleSubmit = async (values: Contact): Promise<void> => {
+        const validationRes = await validationSchema.isValid(values);
+        if (!validationRes) {
+            return;
+        }
+        const c = values as ContactModel;
 
-        const res = await validationSchema.isValid(values);
-
-        // const client = new Client();
-
-        console.log(res);
-        onSave(values);
+        const res = await client.apiContactsCreateorupdatePost(c);
+        if (res.errors && res.errors.length > 0) {
+            console.error(res.errors);
+        }
+        if (res.content) {
+            await onSave(res.content);
+        }
     };
 
     return (
@@ -48,7 +56,7 @@ const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSa
                     <div>
                         <DialogTitle>Contact</DialogTitle>
                         <DialogContent>
-                            <ContactEditForm contact={contact} />
+                            <ContactEditForm />
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose} color="primary">

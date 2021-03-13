@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+	[Consumes("application/json")]
 	[Produces("application/json")]
 	[Route("api/[controller]")]
 	[Authorize]

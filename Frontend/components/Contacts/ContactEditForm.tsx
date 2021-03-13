@@ -1,9 +1,8 @@
 import { FunctionComponent } from "react";
 import { Field } from "formik";
-import { IContact } from "../../interfaces/IContact";
 import { TextField } from "formik-material-ui";
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-
+import { DatePicker } from "formik-material-ui-pickers";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -15,11 +14,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface IProps {
-    contact: IContact;
-}
-const ContactEditForm: FunctionComponent<IProps> = ({ }) => {
+const ContactEditForm: FunctionComponent = ({ }) => {
     const classes = useStyles();
+
+    const customDate = (props: never): JSX.Element => (
+        <DatePicker format="yyyy-MM-dd" autoOk={true} minDate={new Date(1900, 1, 1)} clearable={true} disableFuture={true} {...props} />
+    );
 
     return (
         <div className={classes.root}>
@@ -58,6 +58,13 @@ const ContactEditForm: FunctionComponent<IProps> = ({ }) => {
                 name="number"
                 type="tel"
                 label="Number"
+            />
+
+            <Field fullWidth={true}
+                component={customDate}
+                id="birthDate"
+                name="birthDate"
+                label="Birthdate"
             />
 
         </div>

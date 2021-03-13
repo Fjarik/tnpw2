@@ -12,16 +12,20 @@ export const withAuthServerSideProps = (getServerSidePropsFn?: (context: GetServ
                 }
             };
         }
+        const apiUrl = process.env.BASE_API_URL;
         if (getServerSidePropsFn) {
             const data = await getServerSidePropsFn(ctx);
             return {
                 props: {
-                    data
+                    data,
+                    apiUrl
                 },
             };
         }
         return {
-            props: {}
+            props: {
+                apiUrl
+            }
         };
     };
 };

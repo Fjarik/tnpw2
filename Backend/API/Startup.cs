@@ -120,8 +120,8 @@ namespace API
 			services.AddCors(x => {
 				x.AddPolicy(CorsPolicyName,
 							builder => {
-								builder.WithOrigins("http://localhost:3000"
-										   /*, ""*/) // TODO: Add production url
+								builder.WithOrigins("http://localhost:3000",
+													"https://contacts-tnpw.vercel.app/")
 									   .AllowAnyHeader()
 									   .AllowAnyMethod()
 									   .AllowCredentials();
@@ -129,7 +129,7 @@ namespace API
 			});
 
 			services.AddControllers()
-					.AddNewtonsoftJson(x => x.UseMemberCasing());
+					.AddNewtonsoftJson();
 
 			services.AddSwaggerGen(x => {
 				x.SwaggerDoc("v1", new OpenApiInfo {

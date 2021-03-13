@@ -11,7 +11,9 @@ namespace DataAccess.Models.API
 {
 	public class ContactModel : IValidatableObject
 	{
-		public Guid? Id { get; set; }
+		[Required]
+		[BsonId]
+		public Guid Id { get; set; }
 
 		[Required]
 		public string FirstName { get; set; }
@@ -24,6 +26,7 @@ namespace DataAccess.Models.API
 		public string Number { get; set; }
 
 		[BsonRepresentation(BsonType.DateTime)]
+		[BsonDateTimeOptions(DateOnly = true)]
 		public DateTime? BirthDate { get; set; }
 
 		public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(
@@ -42,7 +45,7 @@ namespace DataAccess.Models.API
 
 		public Contact ToContact() {
 			return new() {
-				Id = Id ?? Guid.Empty,
+				Id = Id,
 				FirstName = FirstName,
 				LastName = LastName,
 				NickName = NickName,

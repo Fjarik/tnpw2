@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers
 {
+	[Consumes("application/json")]
 	[Produces("application/json")]
 	[Route("api/[controller]")]
 	[Authorize]
@@ -50,7 +51,7 @@ namespace API.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<Contact>))]
 		public async Task<ApiActionResult<Contact>> CreateOrUpdateAsync([FromBody] ContactModel contact) {
-			var res = await _contactService.CreateOrUpdateAsync(contact.ToContact());
+			var res = await _contactService.CreateOrUpdateAsync(contact?.ToContact());
 
 			return new ApiActionResult<Contact>(res);
 		}

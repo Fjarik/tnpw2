@@ -10,13 +10,7 @@ namespace DataAccess.Validators
 {
 	public class ContactValidator
 	{
-		private readonly IContactService _contactService;
-
-		public ContactValidator(IContactService contactService) {
-			_contactService = contactService;
-		}
-
-		public async Task<ValidationResult> ValidateAsync(Contact contact) {
+		public ValidationResult Validate(Contact contact) {
 			if (contact == null) {
 				return new ValidationResult(new ArgumentNullException(nameof(contact)));
 			}
@@ -26,15 +20,24 @@ namespace DataAccess.Validators
 			if (string.IsNullOrWhiteSpace(contact.LastName)) {
 				return new ValidationResult(new ArgumentNullException(nameof(contact.LastName)));
 			}
+			return new ValidationResult();
+		}
+
+		public ValidationResult Validate(Contact contact, Contact original, Guid userId) {
+			var res = Validate(contact);
+			if (!res.IsSuccess) {
+				return res;
+			}
+			res = Validate(original);
+			if (!res.IsSuccess) {
+				return res;
+			}
+
 			if (contact.Id == Guid.Empty) {
 				return new ValidationResult();
 			}
-			var res = await _contactService.GetByIdAsync(contact.Id);
-			if (!res.Success || res.Content == null) {
-				return new ValidationResult(new Exception(res.Errors.FirstOrDefault()));
-			}
-			var original = res.Content;
-			if (original.UserId != contact.UserId) {
+
+			if (original.UserId != userId) {
 				return new ValidationResult(new UnauthorizedAccessException());
 			}
 
