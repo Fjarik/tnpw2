@@ -121,7 +121,7 @@ namespace API
 				x.AddPolicy(CorsPolicyName,
 							builder => {
 								builder.WithOrigins("http://localhost:3000",
-													"https://contacts-tnpw.vercel.app/")
+													"https://contacts-tnpw.vercel.app")
 									   .AllowAnyHeader()
 									   .AllowAnyMethod()
 									   .AllowCredentials();
