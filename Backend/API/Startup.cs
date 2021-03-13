@@ -35,7 +35,8 @@ namespace API
 {
 	public class Startup
 	{
-		private const string CorsPolicyName = "_apiSpecificOrigins";
+		private const string LocalCorsPolicyName = "_apiLocalOrigin";
+		private const string ProdCorsPolicyName = "_apiProdOrigin";
 
 		public Startup(IConfiguration configuration) {
 			Configuration = configuration;
@@ -118,10 +119,16 @@ namespace API
 			services.AddScoped<IContactService, ContactService>();
 
 			services.AddCors(x => {
-				x.AddPolicy(CorsPolicyName,
+				x.AddPolicy(LocalCorsPolicyName,
 							builder => {
-								builder.WithOrigins("http://localhost:3000",
-													"https://contacts-tnpw.vercel.app")
+								builder.WithOrigins("http://localhost:3000")
+									   .AllowAnyHeader()
+									   .AllowAnyMethod()
+									   .AllowCredentials();
+							});
+				x.AddPolicy(ProdCorsPolicyName,
+							builder => {
+								builder.WithOrigins("https://contacts-tnpw.vercel.app")
 									   .AllowAnyHeader()
 									   .AllowAnyMethod()
 									   .AllowCredentials();
@@ -175,7 +182,8 @@ namespace API
 
 			app.UseRouting();
 
-			app.UseCors(CorsPolicyName);
+			app.UseCors(LocalCorsPolicyName);
+			app.UseCors(ProdCorsPolicyName);
 
 			app.UseAuthentication();
 			app.UseAuthorization();
