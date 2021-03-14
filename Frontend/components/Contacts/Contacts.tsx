@@ -5,11 +5,8 @@ import { getClient } from "../../services/mainService";
 import { useSession } from "next-auth/client";
 import { Contact } from "../../services/generated";
 
-interface IProps {
-    apiUrl: string
-}
 
-const Contacts: FunctionComponent<IProps> = ({ apiUrl }) => {
+const Contacts: FunctionComponent = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tableRef = useRef<any>();
@@ -22,7 +19,7 @@ const Contacts: FunctionComponent<IProps> = ({ apiUrl }) => {
 
     const showDialog = !!selectedContact;
 
-    const client = getClient(apiUrl, "Bearer " + session?.accessToken);
+    const client = getClient(session.accessToken);
 
     const getContactsAsync = async (query: Query<Contact>): Promise<QueryResult<Contact>> => {
         const res = await client.apiContactsGetallGet();

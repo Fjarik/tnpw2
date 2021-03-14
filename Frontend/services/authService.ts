@@ -5,20 +5,19 @@ interface ILoginProps {
 }
 
 export interface IUserModel {
-    UserName: string;
-    Email: string;
-    FirstName: string;
-    LastName: string;
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
 }
 
 export interface ILoginResult {
-    User: IUserModel;
+    user: IUserModel;
     token: string;
 }
 
-
 export const GetAPI = (endpoint: string): string => {
-    return process.env.API_URL + "/" + endpoint;
+    return process.env.NEXT_PUBLIC_API_URL + "/" + endpoint;
 };
 
 export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | null> => {
@@ -26,7 +25,6 @@ export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | nul
         return null;
     }
     const url = GetAPI("auth/login");
-
     const res = await fetch(url, {
         method: "POST",
         mode: "no-cors",
@@ -43,12 +41,12 @@ export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | nul
     if (res.status == 503) {
         return null;
     }
-    try {
-        if (res.status == 200) {
+    if (res.status == 200) {
+        try {
             return await res.json() as ILoginResult;
+        } catch (e) {
+            console.log(e);
         }
-    } catch {
-
     }
 
     return null;

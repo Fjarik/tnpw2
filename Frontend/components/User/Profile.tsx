@@ -36,7 +36,7 @@ const Profile: FunctionComponent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Typography>
-                            {user.FirstName} {user.LastName}
+                            {user.firstName} {user.lastName}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -46,7 +46,7 @@ const Profile: FunctionComponent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Typography>
-                            {user.UserName}
+                            {user.userName}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -56,7 +56,7 @@ const Profile: FunctionComponent = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Typography>
-                            {user.Email}
+                            {user.email}
                         </Typography>
                     </Grid>
                 </Grid>

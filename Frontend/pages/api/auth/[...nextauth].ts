@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { InitOptions } from "next-auth";
 import Providers from "next-auth/providers";
 import { GenericObject } from "next-auth/_utils";
-import { LoginAsync } from "../../../services/authService";
+import { ILoginResult, LoginAsync } from "../../../services/authService";
 
 const options: InitOptions = {
     providers: [
@@ -23,23 +23,24 @@ const options: InitOptions = {
         }),
     ],
     callbacks: {
-        jwt: async (token, payload: GenericObject): Promise<GenericObject> => {
-            if (payload && payload.Token) {
-                token.accessToken = payload.Token;
-                if (payload.User) {
-                    token.User = payload.User;
+        jwt: async (token, payload: unknown): Promise<GenericObject> => {
+            const p = payload as ILoginResult;
+            if (p && p.token) {
+                token.accessToken = p.token;
+                if (p.user) {
+                    token.user = p.user;
                 }
             }
             return token;
         },
-        session: (session, payload: GenericObject): Promise<GenericObject> => {
+        session: async (session, payload: GenericObject): Promise<GenericObject> => {
             if (payload && payload.accessToken) {
                 session.accessToken = payload.accessToken;
-                if (payload.User) {
-                    session.user = payload.User;
+                if (payload.user) {
+                    session.user = payload.user;
                 }
             }
-            return Promise.resolve(session);
+            return session;
         }
     },
     session: {
