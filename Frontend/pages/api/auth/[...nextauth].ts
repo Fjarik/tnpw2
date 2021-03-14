@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { InitOptions } from "next-auth";
 import Providers from "next-auth/providers";
 import { GenericObject } from "next-auth/_utils";
-import { ILoginResult, LoginAsync } from "../../../services/authService";
+import { LoginAsync } from "../../../services/authService";
+import { LoggedUser } from "../../../services/generated";
 
 const options: InitOptions = {
     providers: [
@@ -24,7 +25,7 @@ const options: InitOptions = {
     ],
     callbacks: {
         jwt: async (token, payload: unknown): Promise<GenericObject> => {
-            const p = payload as ILoginResult;
+            const p = payload as LoggedUser;
             if (p && p.token) {
                 token.accessToken = p.token;
                 if (p.user) {
@@ -43,13 +44,19 @@ const options: InitOptions = {
             return session;
         }
     },
+    events: {
+        signOut: async (message): Promise<void> => {
+            console.log(message);
+        },
+    },
     session: {
-        jwt: true
+        jwt: true,
+        maxAge: 30 * 24 * 60 * 60, // 30 days 
     },
     jwt: {
         secret: process.env.JWT_SECRET,
         signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
-
+        maxAge: 30 * 24 * 60 * 60, // 30 days 
     }
 };
 

@@ -75,7 +75,7 @@ namespace API.Controllers
 		[SwaggerResponse(200, Type = typeof(bool))]
 		public async Task<ActionResult> Logout() {
 			await _authService.LogoutAsync();
-			return Ok();
+			return Ok(true);
 		}
 	}
 }

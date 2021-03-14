@@ -1,26 +1,10 @@
-
-interface ILoginProps {
-    username: string;
-    password: string;
-}
-
-export interface IUserModel {
-    userName: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-}
-
-export interface ILoginResult {
-    user: IUserModel;
-    token: string;
-}
+import { LoggedUser, LoginInput } from "./generated";
 
 export const GetAPI = (endpoint: string): string => {
     return process.env.NEXT_PUBLIC_API_URL + "/" + endpoint;
 };
 
-export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | null> => {
+export const LoginAsync = async (props: LoginInput): Promise<LoggedUser | null> => {
     if (!props || !props.username || !props.password) {
         return null;
     }
@@ -43,7 +27,7 @@ export const LoginAsync = async (props: ILoginProps): Promise<ILoginResult | nul
     }
     if (res.status == 200) {
         try {
-            return await res.json() as ILoginResult;
+            return await res.json() as LoggedUser;
         } catch (e) {
             console.log(e);
         }
