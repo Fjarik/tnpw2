@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useSession } from "next-auth/client";
-import { IUserModel } from "../../services/authService";
 import { Container, Grid, Typography, Paper, makeStyles, createStyles } from "@material-ui/core";
+import { UserModel } from "../../services/generated";
 
 const useStyles = makeStyles(() => createStyles({
     main: {
@@ -19,7 +19,7 @@ const Profile: FunctionComponent = () => {
         return <></>;
     }
 
-    const user = session.user as IUserModel;
+    const user = session.user as UserModel;
 
     return <>
         <Container component="main" maxWidth="xs" >
