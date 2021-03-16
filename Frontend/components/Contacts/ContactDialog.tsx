@@ -5,6 +5,7 @@ import ContactEditForm from "./ContactEditForm";
 import * as yup from "yup";
 import { Contact } from "../../services/generated";
 import { ContactModel, ContactsApiInterface } from "../../services/generated";
+import ContactDetail from "./ContactDetail";
 
 
 const validationSchema = yup.object({
@@ -16,15 +17,17 @@ const validationSchema = yup.object({
     birthDate: yup.date().nullable(true).notRequired().min(new Date(1900, 0, 1)),
 });
 
-interface IProps {
+export interface ContactDialogProps {
+    isEdit: boolean;
     open: boolean;
     contact: Contact;
     onClose: () => void;
     onSave: (contact: Contact) => Promise<void>;
+    switchToEdit: () => void;
     client: ContactsApiInterface;
 }
 
-const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSave, client }) => {
+const ContactDialog: FunctionComponent<ContactDialogProps> = ({ isEdit, open, contact, onClose, onSave, switchToEdit, client }) => {
 
     contact.nickName = contact.nickName ?? "";
     contact.number = contact.number ?? "";
@@ -49,26 +52,34 @@ const ContactDialog: FunctionComponent<IProps> = ({ open, contact, onClose, onSa
         }
     };
 
+    const form = (
+        <Formik initialValues={contact} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            <Form>
+                <div>
+                    <DialogTitle>Contact</DialogTitle>
+                    <DialogContent>
+                        <ContactEditForm />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button type="submit" color="primary">
+                            Save
+                        </Button>
+                    </DialogActions>
+                </div>
+            </Form>
+        </Formik>
+    );
+
+    const detail = (
+        <ContactDetail contact={contact} onClose={onClose} switchToEdit={switchToEdit} />
+    );
+
     return (
         <Dialog onClose={handleClose} open={open} maxWidth={"lg"} fullWidth={true}>
-            <Formik initialValues={contact} validationSchema={validationSchema} onSubmit={handleSubmit}>
-                <Form>
-                    <div>
-                        <DialogTitle>Contact</DialogTitle>
-                        <DialogContent>
-                            <ContactEditForm />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} color="primary">
-                                Cancel
-                        </Button>
-                            <Button type="submit" color="primary">
-                                Save
-                        </Button>
-                        </DialogActions>
-                    </div>
-                </Form>
-            </Formik>
+            {isEdit ? form : detail}
         </Dialog>
     );
 };

@@ -1,9 +1,11 @@
 import { FunctionComponent, MouseEvent, useRef, useState } from "react";
 import MaterialTable, { Action, Column, MaterialTableProps, Options, Query, QueryResult } from "material-table";
-import ContactDialog from "./ContactDialog";
+import ContactDialog, { ContactDialogProps } from "./ContactDialog";
 import { getClient } from "../../services/mainService";
 import { useSession } from "next-auth/client";
 import { Contact } from "../../services/generated";
+import Picture from "./Picture";
+import { NIL } from "uuid";
 
 
 const Contacts: FunctionComponent = () => {
@@ -12,6 +14,7 @@ const Contacts: FunctionComponent = () => {
     const tableRef = useRef<any>();
     const [session] = useSession();
     const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
 
     if (!session || !session.accessToken) {
         return <></>;
@@ -44,9 +47,9 @@ const Contacts: FunctionComponent = () => {
         tableRef.current && tableRef.current.onQueryChange();
     };
 
-    const handleSave = async (): Promise<void> => {
-        setSelectedContact(null);
-
+    const handleSave = async (contact: Contact): Promise<void> => {
+        setSelectedContact(contact);
+        setIsEdit(false);
         reloadTable();
     };
 
@@ -69,10 +72,20 @@ const Contacts: FunctionComponent = () => {
     const onRowClick = (_event?: MouseEvent, contact?: Contact): void => {
         if (contact) {
             setSelectedContact(contact);
+            setIsEdit(false);
         }
     };
 
     const columns: Column<Contact>[] = [
+        {
+            field: "image",
+            title: "",
+            // eslint-disable-next-line react/display-name
+            render: (data) => (<Picture contact={data} />),
+            cellStyle: {
+                "width": "4%",
+            },
+        },
         { field: "firstName", title: "Firstname", },
         { field: "lastName", title: "Lastname", },
         { field: "email", title: "Email", },
@@ -87,6 +100,7 @@ const Contacts: FunctionComponent = () => {
                 const contact = Array.isArray(contacts) ? contacts[0] : contacts;
                 if (contact) {
                     setSelectedContact(contact);
+                    setIsEdit(true);
                 }
             },
         },
@@ -97,6 +111,7 @@ const Contacts: FunctionComponent = () => {
                 const contact = Array.isArray(contacts) ? contacts[0] : contacts;
                 if (contact) {
                     await handleDelete(contact);
+                    setIsEdit(false);
                 }
             },
         },
@@ -108,9 +123,10 @@ const Contacts: FunctionComponent = () => {
                 setSelectedContact({
                     firstName: "",
                     lastName: "",
-                    id: "00000000-0000-0000-0000-000000000000",
+                    id: NIL,
                     birthDate: undefined,
                 } as Contact);
+                setIsEdit(true);
             },
         }
     ];
@@ -130,11 +146,21 @@ const Contacts: FunctionComponent = () => {
         options,
     };
 
+    const dialogProps: ContactDialogProps | null = selectedContact && {
+        open: showDialog,
+        onClose: handleDialogClose,
+        onSave: handleSave,
+        contact: selectedContact,
+        client: client,
+        switchToEdit: () => setIsEdit(true),
+        isEdit,
+    };
+
     return (
         <div>
             <MaterialTable tableRef={tableRef} {...tableProps} />
-            {selectedContact &&
-                <ContactDialog open={showDialog} onClose={handleDialogClose} onSave={handleSave} contact={selectedContact} client={client} />
+            {dialogProps &&
+                <ContactDialog {...dialogProps} />
             }
         </div>
     );
