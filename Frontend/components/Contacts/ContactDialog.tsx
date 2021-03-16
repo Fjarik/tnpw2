@@ -78,7 +78,7 @@ const ContactDialog: FunctionComponent<ContactDialogProps> = ({ isEdit, open, co
     );
 
     return (
-        <Dialog onClose={handleClose} open={open} maxWidth={"lg"} fullWidth={true}>
+        <Dialog onClose={handleClose} open={open} maxWidth={"md"} fullWidth={true}>
             {isEdit ? form : detail}
         </Dialog>
     );
