@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { InitOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import Providers from "next-auth/providers";
-import { GenericObject } from "next-auth/_utils";
-import { LoginAsync } from "../../../services/authService";
+import { WithAdditionalParams } from "next-auth/_utils";
+import { LoginAsync, LogoutAsync } from "../../../services/authService";
 import { LoggedUser } from "../../../services/generated";
 
-const options: InitOptions = {
+const options: NextAuthOptions = {
     providers: [
         Providers.Credentials({
             name: "Username & Password",
@@ -13,18 +13,18 @@ const options: InitOptions = {
                 username: { label: "Username", type: "text", placeholder: "Your username" },
                 password: { label: "Password", type: "password", placeholder: "Your password" }
             },
-            authorize: async ({ username, password }) => {
-                const user = await LoginAsync({ username, password });
+            authorize: async (credentials) => {
+                const user = await LoginAsync(credentials);
                 // console.log("Logged user:", user);
                 if (user) {
-                    return user;
+                    return user as User;
                 }
                 return null;
             }
         }),
     ],
     callbacks: {
-        jwt: async (token, payload: unknown): Promise<GenericObject> => {
+        jwt: async (token, payload: unknown): Promise<WithAdditionalParams<JWT>> => {
             const p = payload as LoggedUser;
             if (p && p.token) {
                 token.accessToken = p.token;
@@ -34,19 +34,20 @@ const options: InitOptions = {
             }
             return token;
         },
-        session: async (session, payload: GenericObject): Promise<GenericObject> => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        session: async (session: Session, payload: any): Promise<WithAdditionalParams<Session>> => {
             if (payload && payload.accessToken) {
-                session.accessToken = payload.accessToken;
+                session.accessToken = payload.accessToken as string;
                 if (payload.user) {
-                    session.user = payload.user;
+                    session.user = payload.user as WithAdditionalParams<User>;
                 }
             }
-            return session;
+            return session as WithAdditionalParams<Session>;
         }
     },
     events: {
-        signOut: async (message): Promise<void> => {
-            console.log(message);
+        signOut: async (message: Session): Promise<void> => {
+            await LogoutAsync(message?.accessToken);
         },
     },
     session: {
@@ -60,4 +61,4 @@ const options: InitOptions = {
     }
 };
 
-export default (req: NextApiRequest, res: NextApiResponse): Promise<void> => NextAuth(req, res, options);
+export default NextAuth(options);

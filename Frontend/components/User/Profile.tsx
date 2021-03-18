@@ -19,7 +19,7 @@ const Profile: FunctionComponent = () => {
         return <></>;
     }
 
-    const user = session.user as UserModel;
+    const user = session.user as unknown as UserModel;
 
     return <>
         <Container component="main" maxWidth="xs" >

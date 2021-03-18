@@ -53,19 +53,20 @@ namespace API
 
 			var conString = Configuration.GetConnectionString(settings.Database.ConnectionStringName);
 
-			services.AddIdentityMongoDbProvider<User, Role, Guid>(x => {
-																	  x.Password.RequireDigit = false;
-																	  x.Password.RequireLowercase = false;
-																	  x.Password.RequireNonAlphanumeric = false;
-																	  x.Password.RequireUppercase = false;
-																	  x.Password.RequiredUniqueChars = 0;
-																	  x.Password.RequiredLength = 3;
-																  },
-																  mongo => {
-																	  mongo.ConnectionString = conString;
-																	  mongo.UsersCollection =
-																		  settings.Database.UsersCollectionName;
-																  })
+			services.AddIdentityMongoDbProvider<User, Role, Guid>(
+						x => {
+							x.Password.RequireDigit = false;
+							x.Password.RequireLowercase = false;
+							x.Password.RequireNonAlphanumeric = false;
+							x.Password.RequireUppercase = false;
+							x.Password.RequiredUniqueChars = 0;
+							x.Password.RequiredLength = 3;
+						},
+						mongo => {
+							mongo.ConnectionString = conString;
+							mongo.UsersCollection = settings.Database.UsersCollectionName;
+						}
+					)
 					.AddDefaultTokenProviders()
 					.AddUserManager<UserManager<User>>()
 					.AddRoleManager<RoleManager<Role>>()

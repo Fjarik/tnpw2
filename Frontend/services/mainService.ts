@@ -1,4 +1,4 @@
-import { Session } from "next-auth/client";
+import { Session } from "next-auth";
 import { ContactsApi, ContactsApiInterface } from "./generated";
 
 export const getClientFromSession = (session?: Session): ContactsApiInterface => {
