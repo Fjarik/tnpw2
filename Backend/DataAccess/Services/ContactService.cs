@@ -74,6 +74,18 @@ namespace DataAccess.Services
 			}
 		}
 
+		public async Task<UniversalResult<bool>> SetFavouriteAsync(Guid contactId, bool favourite) {
+			await EnsureManagerAsync();
+
+			try {
+				var result = await _manager.UpdateFavourite(contactId, favourite);
+
+				return UniversalResult<bool>.Ok(result);
+			} catch (Exception ex) {
+				return UniversalResult<bool>.Fail(ex.Message);
+			}
+		}
+
 		public async Task<UniversalResult<bool>> UpdatePictureAsync(IFormFile file, Guid contactId) {
 			await EnsureManagerAsync();
 

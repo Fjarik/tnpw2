@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
-import { withAuthServerSideProps } from "../components/auth/AuthWrapper";
-import Contacts from "../components/Contacts/Contacts";
-import Layout from "../components/Layout/Layout";
+import { withAuthServerSideProps } from "@components/auth/AuthWrapper";
+import Contacts from "@components/Contacts/Contacts";
+import Layout from "@components/Layout/Layout";
 
 
 const IndexPage: NextPage = () => {

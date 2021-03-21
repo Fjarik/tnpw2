@@ -2,8 +2,7 @@ import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Providers from "next-auth/providers";
 import { WithAdditionalParams } from "next-auth/_utils";
-import { LoginAsync, LogoutAsync } from "../../../services/authService";
-import { LoggedUser } from "../../../services/generated";
+import { LoggedUser, LoginAsync, LogoutAsync } from "@services";
 
 const options: NextAuthOptions = {
     providers: [

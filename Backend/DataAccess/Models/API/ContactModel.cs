@@ -21,6 +21,9 @@ namespace DataAccess.Models.API
 		[Required]
 		public string LastName { get; set; }
 
+		[EmailAddress]
+		public string Email { get; set; }
+
 		public string NickName { get; set; }
 
 		public string Number { get; set; }
@@ -37,6 +40,9 @@ namespace DataAccess.Models.API
 			if (string.IsNullOrWhiteSpace(Number)) {
 				Number = null;
 			}
+			if (string.IsNullOrWhiteSpace(Email)) {
+				Email = null;
+			}
 			if (BirthDate != null && BirthDate > DateTime.Now) {
 				yield return new System.ComponentModel.DataAnnotations.ValidationResult(
 					"Birth date must be before now!", new[] {nameof(BirthDate)});
@@ -49,6 +55,7 @@ namespace DataAccess.Models.API
 				FirstName = FirstName,
 				LastName = LastName,
 				NickName = NickName,
+				Email = Email,
 				Number = Number,
 				BirthDate = BirthDate
 			};

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { useSession } from "next-auth/client";
 import { Container, Grid, Typography, Paper, makeStyles, createStyles } from "@material-ui/core";
-import { UserModel } from "../../services/generated";
+import { UserModel } from "@services";
 
 const useStyles = makeStyles(() => createStyles({
     main: {

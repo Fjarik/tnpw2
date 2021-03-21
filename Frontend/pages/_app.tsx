@@ -3,7 +3,7 @@ import { CssBaseline } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { Provider } from "next-auth/client";
-import ThemeContainer from "../components/Themes/ThemeContainer";
+import ThemeContainer from "@components/Themes/ThemeContainer";
 
 
 const CustomApp: AppComponent = ({ Component, pageProps }: AppProps) => {

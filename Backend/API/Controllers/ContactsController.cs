@@ -30,6 +30,7 @@ namespace API.Controllers
 		[Route("getall")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<List<Contact>>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<List<Contact>>))]
 		public async Task<ApiActionResult<List<Contact>>> GetAllAsync() {
 			var res = await _contactService.GetUserContactsAsync();
 
@@ -40,6 +41,7 @@ namespace API.Controllers
 		[Route("delete")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<bool>))]
 		public async Task<ApiActionResult<bool>> DeleteAsync(Guid id) {
 			var res = await _contactService.DeleteAsync(id);
 
@@ -50,6 +52,7 @@ namespace API.Controllers
 		[Route("createorupdate")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<Contact>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<Contact>))]
 		public async Task<ApiActionResult<Contact>> CreateOrUpdateAsync([FromBody] ContactModel contact) {
 			var res = await _contactService.CreateOrUpdateAsync(contact?.ToContact());
 
@@ -57,9 +60,25 @@ namespace API.Controllers
 		}
 
 		[HttpPost]
+		[Route("setfavourite")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<bool>))]
+		public async Task<ApiActionResult<bool>> SetFavourite([FromBody] FavouriteContactModel model) {
+			if (model == null) {
+				return new ApiActionResult<bool>(UniversalResult<bool>.Fail("No input passed"));
+			}
+
+			var res = await _contactService.SetFavouriteAsync(model.Id, model.Favourite);
+
+			return new ApiActionResult<bool>(res);
+		}
+
+		[HttpPost]
 		[Route("photo")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<bool>))]
 		public async Task<ApiActionResult<bool>> UpdatePictureAsync([FromForm] IFormFile picture,
 																	Guid contactId) {
 			var res = await _contactService.UpdatePictureAsync(picture, contactId);
@@ -71,6 +90,7 @@ namespace API.Controllers
 		[Route("delphoto")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
+		[SwaggerResponse(400, Type = typeof(ApiResult<bool>))]
 		public async Task<ApiActionResult<bool>> DeletePictureAsync(Guid contactId) {
 			var res = await _contactService.DeletePictureAsync(contactId);
 

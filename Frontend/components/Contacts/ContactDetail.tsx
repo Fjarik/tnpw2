@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Contact } from "../../services/generated";
+import { Contact } from "@services";
 import { Button, DialogActions, DialogContent, DialogTitle, Grid, Theme, Typography, makeStyles, createStyles } from "@material-ui/core";
 import Picture from "./Picture";
 import PhoneIcon from "@material-ui/icons/Phone";

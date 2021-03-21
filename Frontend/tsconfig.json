@@ -23,7 +23,16 @@
     "typeRoots": [
       "./custom_typings",
       "./node_modules/@types",
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": [
+        "components/*"
+      ],
+      "@services": [
+        "services"
+      ],
+    }
   },
   "exclude": [
     "node_modules",

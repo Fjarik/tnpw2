@@ -1,7 +1,7 @@
 import { Avatar, createStyles, makeStyles, Theme } from "@material-ui/core";
 import { deepOrange } from "@material-ui/core/colors";
 import { FunctionComponent } from "react";
-import { Contact } from "../../services/generated";
+import { Contact } from "@services";
 
 const useStyle = makeStyles((theme: Theme) =>
     createStyles({

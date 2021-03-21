@@ -14,5 +14,7 @@ namespace DataAccess.Models
 		public Guid UserId { get; set; }
 
 		public Image Image { get; set; }
+
+		public bool Favourite { get; set; }
 	}
 }

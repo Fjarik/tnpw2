@@ -1,9 +1,8 @@
 import { FunctionComponent, MouseEvent, useRef, useState } from "react";
 import MaterialTable, { Action, Column, MaterialTableProps, Options, Query, QueryResult } from "material-table";
 import ContactDialog, { ContactDialogProps } from "./ContactDialog";
-import { getClient } from "../../services/mainService";
 import { useSession } from "next-auth/client";
-import { Contact } from "../../services/generated";
+import { Contact, getClient } from "@services";
 import Picture from "./Picture";
 import { NIL } from "uuid";
 
@@ -44,7 +43,7 @@ const Contacts: FunctionComponent = () => {
     };
 
     const reloadTable = (): void => {
-        tableRef.current && tableRef.current.onQueryChange();
+        tableRef?.current?.onQueryChange && tableRef.current.onQueryChange();
     };
 
     const handleSave = async (contact: Contact): Promise<void> => {

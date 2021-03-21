@@ -12,10 +12,17 @@ namespace DataAccess.Interfaces
 	public interface IContactService
 	{
 		Task<UniversalResult<Contact>> GetByIdAsync(Guid contactId);
+
 		Task<UniversalResult<List<Contact>>> GetUserContactsAsync();
+
 		Task<UniversalResult<Contact>> CreateOrUpdateAsync(Contact contact);
+
 		Task<UniversalResult<bool>> DeleteAsync(Guid contactId);
+
+		Task<UniversalResult<bool>> SetFavouriteAsync(Guid contactId, bool favourite);
+
 		Task<UniversalResult<bool>> UpdatePictureAsync(IFormFile file, Guid contactId);
+
 		Task<UniversalResult<bool>> DeletePictureAsync(Guid contactId);
 	}
 }

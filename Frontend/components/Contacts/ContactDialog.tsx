@@ -3,8 +3,7 @@ import { FunctionComponent } from "react";
 import { Formik, Form } from "formik";
 import ContactEditForm from "./ContactEditForm";
 import * as yup from "yup";
-import { Contact } from "../../services/generated";
-import { ContactModel, ContactsApiInterface } from "../../services/generated";
+import { ContactModel, ContactsApiInterface, Contact } from "@services";
 import ContactDetail from "./ContactDetail";
 
 

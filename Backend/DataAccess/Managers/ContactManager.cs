@@ -98,6 +98,21 @@ namespace DataAccess.Managers
 			return res.DeletedCount == 1;
 		}
 
+		public async Task<bool> UpdateFavourite(Guid id, bool favourite) {
+			_logger.LogInformation("ContactManager.UpdateFavourite().............");
+
+			if (id == Guid.Empty) {
+				throw new ArgumentNullException(nameof(id));
+			}
+
+			var update = Builders<Contact>.Update.Set(x => x.Favourite, favourite);
+
+			var res = await _contacts.UpdateOneAsync(x => x.Id == id && x.UserId == _currentUser.Id, update);
+
+			_logger.LogInformation("ContactManager.UpdateFavourite()............. Done");
+			return res.IsModifiedCountAvailable && res.ModifiedCount == 1;
+		}
+
 		public async Task<bool> UpdatePictureAsync(IFormFile file, Guid contactId) {
 			_logger.LogInformation("ContactManager.UpdatePictureAsync().............");
 			if (file == null) {
