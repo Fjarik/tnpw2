@@ -30,7 +30,7 @@ interface IProps {
 const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEdit }) => {
     const classes = useStyles();
 
-    const { firstName, lastName, number, nickName, birthDate } = contact;
+    const { firstName, lastName, number, nickName, birthDate, email } = contact;
 
     const fullName = firstName + (lastName ? (" " + lastName) : "") + (nickName ? ("," + nickName) : "");
 
@@ -53,9 +53,11 @@ const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEd
                     <Grid item xs={12}>
                         <Typography>Information</Typography>
                     </Grid>
-                    <ContactDetailRow icon={<EmailIcon />} />
                     <ContactDetailRow icon={<PhoneIcon />} >
                         {number}
+                    </ContactDetailRow>
+                    <ContactDetailRow icon={<EmailIcon />} >
+                        {email}
                     </ContactDetailRow>
                     <ContactDetailRow icon={<CakeIcon />} >
                         {birthDate?.toDateString()}

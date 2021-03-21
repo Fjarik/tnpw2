@@ -167,6 +167,12 @@ export interface Contact {
      * @type {string}
      * @memberof Contact
      */
+    email?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Contact
+     */
     nickName?: string;
     /**
      * 
@@ -192,6 +198,12 @@ export interface Contact {
      * @memberof Contact
      */
     image?: Image;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Contact
+     */
+    favourite?: boolean;
 }
 /**
  * 
@@ -260,6 +272,12 @@ export interface ContactModel {
      * @type {string}
      * @memberof ContactModel
      */
+    email?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContactModel
+     */
     nickName?: string;
     /**
      * 
@@ -273,6 +291,25 @@ export interface ContactModel {
      * @memberof ContactModel
      */
     birthDate?: Date;
+}
+/**
+ * 
+ * @export
+ * @interface FavouriteContactModel
+ */
+export interface FavouriteContactModel {
+    /**
+     * 
+     * @type {string}
+     * @memberof FavouriteContactModel
+     */
+    id: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FavouriteContactModel
+     */
+    favourite: boolean;
 }
 /**
  * 
@@ -493,10 +530,10 @@ export const AuthApiFetchParamCreator = function (configuration?: Configuration)
 export const AuthApiFp = function (configuration?: Configuration) {
     return {
         /**
-        * 
-        * @param {*} [options] Override http request option.
-        * @throws {RequiredError}
-        */
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         apiAuthLogoutPost(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<boolean> {
             const localVarFetchArgs = AuthApiFetchParamCreator(configuration).apiAuthLogoutPost(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
@@ -642,7 +679,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"ContactModel" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
@@ -679,7 +716,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -714,7 +751,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -744,7 +781,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
@@ -782,9 +819,44 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"Body" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {FavouriteContactModel} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiContactsSetfavouritePost(body?: FavouriteContactModel, options: any = {}): FetchArgs {
+            const localVarPath = `/api/Contacts/setfavourite`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? configuration.apiKey("Authorization")
+                    : configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            // delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"FavouriteContactModel" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
 
             return {
@@ -891,6 +963,24 @@ export const ContactsApiFp = function (configuration?: Configuration) {
                 });
             };
         },
+        /**
+         * 
+         * @param {FavouriteContactModel} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsSetfavouritePost(body, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
     }
 };
 
@@ -945,6 +1035,15 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
         apiContactsPhotoPost(body?: Body, contactId?: string, options?: any) {
             return ContactsApiFp(configuration).apiContactsPhotoPost(body, contactId, options)(fetch, basePath);
         },
+        /**
+         * 
+         * @param {FavouriteContactModel} [body] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any) {
+            return ContactsApiFp(configuration).apiContactsSetfavouritePost(body, options)(fetch, basePath);
+        },
     };
 };
 
@@ -998,6 +1097,15 @@ export interface ContactsApiInterface {
      * @memberof ContactsApiInterface
      */
     apiContactsPhotoPost(body?: Body, contactId?: string, options?: any): Promise<BooleanApiResult>;
+
+    /**
+     * 
+     * @param {FavouriteContactModel} [body] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContactsApiInterface
+     */
+    apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any): Promise<BooleanApiResult>;
 
 }
 
@@ -1063,6 +1171,17 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
         return ContactsApiFp(this.configuration).apiContactsPhotoPost(body, contactId, options)(this.fetch, this.basePath);
     }
 
+    /**
+     * 
+     * @param {FavouriteContactModel} [body] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ContactsApi
+     */
+    public apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any) {
+        return ContactsApiFp(this.configuration).apiContactsSetfavouritePost(body, options)(this.fetch, this.basePath);
+    }
+
 }
 /**
  * UsersApi - fetch parameter creator
@@ -1092,7 +1211,7 @@ export const UsersApiFetchParamCreator = function (configuration?: Configuration
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            //             delete localVarUrlObj.search;
+            // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
