@@ -24,7 +24,7 @@ const Contacts: FunctionComponent = () => {
 
     const client = getClient(session.accessToken);
 
-    const sort = ({ favourite: fOne, firstName: fnOne }: Contact, { favourite: fTwo, firstName: fnTwo }: Contact): number => {
+    const sort = ({ favourite: fOne, firstName: fnOne, lastName: lOne }: Contact, { favourite: fTwo, firstName: fnTwo, lastName: lTwo }: Contact): number => {
         if (fOne && !fTwo) {
             return -1;
         } else if (!fOne && fTwo) {
@@ -35,6 +35,16 @@ const Contacts: FunctionComponent = () => {
         } else if (fnOne < fnTwo) {
             return -1;
         }
+        const lnOne = lOne ?? "";
+        const lnTwo = lTwo ?? "";
+
+        if (lnOne > lnTwo) {
+            return 1;
+        }
+        if (lnOne < lnTwo) {
+            return -1;
+        }
+
         return 0;
     };
 
@@ -114,7 +124,7 @@ const Contacts: FunctionComponent = () => {
             title: "",
             disableClick: true,
             // eslint-disable-next-line react/display-name
-            render: (data) => (<FavouriteButton contact={data} client={client} />),
+            render: (data) => (<FavouriteButton contact={data} reload={reloadTable} />),
             cellStyle: {
                 "width": "4%",
             },

@@ -1,10 +1,11 @@
 import { FunctionComponent } from "react";
-import { Contact, ContactModel } from "@services";
+import { Contact } from "@services";
 import * as yup from "yup";
 import { Formik, Form } from "formik";
 import { Button, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import ContactEditForm from "./ContactEditForm";
 import { useClient } from "@lib/ClientContext";
+import { format } from "date-fns";
 
 const validationSchema = yup.object({
     firstName: yup.string().required("First Name is required"),
@@ -24,12 +25,12 @@ const ContactForm: FunctionComponent<IProps> = ({ contact, onClose, onSave }) =>
     const client = useClient();
 
     const initialContact: Contact = {
+        ...contact,
         lastName: contact.lastName ?? "",
         nickName: contact.nickName ?? "",
         email: contact.email ?? "",
         number: contact.number ?? "",
         birthDate: contact.birthDate ?? null,
-        ...contact
     };
 
     const handleSubmit = async (values: Contact): Promise<void> => {
@@ -37,9 +38,13 @@ const ContactForm: FunctionComponent<IProps> = ({ contact, onClose, onSave }) =>
         if (!validationRes) {
             return;
         }
-        const c = values as ContactModel;
+        const { birthDate } = values;
+        const date = birthDate ? format(new Date(birthDate), "yyyy-MM-dd") : null;
 
-        const res = await client.apiContactsCreateorupdatePost(c);
+        const res = await client.apiContactsCreateorupdatePost({
+            ...values,
+            birthDate: date
+        });
         if (res.errors && res.errors.length > 0) {
             console.error(res.errors);
         }

@@ -100,49 +100,7 @@ export interface BooleanApiResult {
  * @export
  * @interface Contact
  */
-export interface Contact {
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    firstName: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    lastName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    nickName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Contact
-     */
-    number?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof Contact
-     */
-    birthDate: Date | null;
+export interface Contact extends ContactModel {
     /**
      * 
      * @type {string}
@@ -247,7 +205,7 @@ export interface ContactModel {
      * @type {Date}
      * @memberof ContactModel
      */
-    birthDate?: Date | null;
+    birthDate: string | null;
 }
 /**
  * 
