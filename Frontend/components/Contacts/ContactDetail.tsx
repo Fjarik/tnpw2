@@ -10,6 +10,7 @@ import NameDay from "@components/Date/NameDay";
 import PictureForm from "@components/Picture/PictureForm";
 import daysUntil from "@utils/DaysUntil";
 import format from "date-fns/format";
+import { useTable } from "@lib/TableContext";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,12 +27,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IProps {
     contact: Contact;
-    onClose: () => void;
-    reload: () => void;
-    switchToEdit: () => void;
 }
-const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEdit, reload }) => {
+const ContactDetail: FunctionComponent<IProps> = ({ contact }) => {
     const classes = useStyles();
+
+    const { onClose, switchToEdit } = useTable();
 
     const { firstName, lastName, number, nickName, birthDate, email } = contact;
 
@@ -44,7 +44,7 @@ const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEd
             <DialogTitle>
                 <Grid container>
                     <Grid item xs="auto" className={classes.avatar}>
-                        <PictureForm contact={contact} reload={reload} />
+                        <PictureForm contact={contact} />
                     </Grid>
                     <Grid item className={classes.text}>
                         <Typography variant="h5">

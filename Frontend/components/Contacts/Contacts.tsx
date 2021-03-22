@@ -1,12 +1,12 @@
 import { FunctionComponent, MouseEvent, useRef, useState } from "react";
 import MaterialTable, { Action, Column, MaterialTableProps, Options, Query, QueryResult } from "material-table";
-import ContactDialog, { ContactDialogProps } from "./ContactDialog";
+import ContactDialog from "./ContactDialog";
 import { useSession } from "next-auth/client";
 import { Contact, getClient } from "@services";
 import Picture from "@components/Picture/Picture";
 import { NIL } from "uuid";
 import FavouriteButton from "./FavouriteButton";
-import { ClientContext } from "@lib/ClientContext";
+import { ITableContext, TableContext } from "@lib/TableContext";
 
 const Contacts: FunctionComponent = () => {
 
@@ -124,7 +124,7 @@ const Contacts: FunctionComponent = () => {
             title: "",
             disableClick: true,
             // eslint-disable-next-line react/display-name
-            render: (data) => (<FavouriteButton contact={data} reload={reloadTable} />),
+            render: (data) => (<FavouriteButton contact={data} />),
             cellStyle: {
                 "width": "4%",
             },
@@ -174,6 +174,7 @@ const Contacts: FunctionComponent = () => {
         paging: false,
         actionsColumnIndex: 99,
         selection: false,
+        search: false,
     };
 
     const tableProps: MaterialTableProps<Contact> = {
@@ -185,24 +186,22 @@ const Contacts: FunctionComponent = () => {
         options,
     };
 
-    const dialogProps: ContactDialogProps | null = selectedContact && {
-        open: showDialog,
+    const ctx: ITableContext = {
+        client,
+        reloadTable,
         onClose: handleDialogClose,
-        onSave: handleSave,
-        contact: selectedContact,
         switchToEdit: () => setIsEdit(true),
-        reload: reloadTable,
-        isEdit,
+        onSave: handleSave
     };
 
     return (
         <div>
-            <ClientContext.Provider value={{ client }}>
+            <TableContext.Provider value={ctx}>
                 <MaterialTable tableRef={tableRef} {...tableProps} />
-                {dialogProps &&
-                    <ContactDialog {...dialogProps} />
+                {selectedContact &&
+                    <ContactDialog contact={selectedContact} open={showDialog} isEdit={isEdit} />
                 }
-            </ClientContext.Provider>
+            </TableContext.Provider>
         </div>
     );
 };

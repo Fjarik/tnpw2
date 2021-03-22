@@ -3,7 +3,7 @@ import { Contact } from "@services";
 import Picture from "@components/Picture/Picture";
 import { CircularProgress, IconButton, Theme, makeStyles, createStyles } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import { useClient } from "@lib/ClientContext";
+import { useTable } from "@lib/TableContext";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 interface IProps {
     contact: Contact;
-    reload: () => void;
 }
-const PictureForm: FunctionComponent<IProps> = ({ contact, reload }) => {
+const PictureForm: FunctionComponent<IProps> = ({ contact }) => {
     const inputFile = useRef<HTMLInputElement>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const classes = useStyles();
-    const client = useClient();
+
+    const { client, reloadTable } = useTable();
 
     const { id, image } = contact;
 
@@ -40,7 +40,7 @@ const PictureForm: FunctionComponent<IProps> = ({ contact, reload }) => {
             setLoading(true);
             const res = await client.apiContactsPhotoPost(file, id);
             if (res) {
-                reload();
+                reloadTable();
             }
             setLoading(false);
         }
@@ -50,7 +50,7 @@ const PictureForm: FunctionComponent<IProps> = ({ contact, reload }) => {
         setLoading(true);
         const res = await client.apiContactsDelphotoDelete(id);
         if (res) {
-            reload();
+            reloadTable();
         }
         setLoading(false);
     };

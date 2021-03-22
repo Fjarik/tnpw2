@@ -4,9 +4,12 @@ import { Container, Grid, Typography, Paper, makeStyles, createStyles } from "@m
 import { UserModel } from "@services";
 
 const useStyles = makeStyles(() => createStyles({
+    containerMain: {
+        display: "flex",
+        alignItems: "center",
+        height: "calc(100vh - 50px - 80px)"
+    },
     main: {
-        marginTop: "10rem",
-        marginBottom: "10rem",
         padding: "1rem",
     }
 }));
@@ -22,39 +25,39 @@ const Profile: FunctionComponent = () => {
     const user = session.user as unknown as UserModel;
 
     return <>
-        <Container component="main" maxWidth="xs" >
+        <Container component="main" maxWidth="xs" className={classes.containerMain} >
             <Paper className={classes.main}>
                 <Typography variant="h4">
                     Profile
                 </Typography>
                 <hr />
                 <Grid container>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={4} sm={6}>
                         <Typography>
                             Name
                     </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={8} sm={6}>
                         <Typography>
                             {user.firstName} {user.lastName}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={4} sm={6}>
                         <Typography>
                             Username
                     </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={8} sm={6}>
                         <Typography>
                             {user.userName}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={4} sm={6}>
                         <Typography>
                             Email
                     </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={8} sm={6}>
                         <Typography>
                             {user.email}
                         </Typography>

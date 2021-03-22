@@ -3,14 +3,13 @@ import { Contact } from "@services";
 import { IconButton } from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import { useClient } from "@lib/ClientContext";
+import { useTable } from "@lib/TableContext";
 
 interface IProps {
     contact: Contact;
-    reload: () => void;
 }
-const FavouriteButton: FunctionComponent<IProps> = ({ contact, reload }) => {
-    const client = useClient();
+const FavouriteButton: FunctionComponent<IProps> = ({ contact }) => {
+    const { client, reloadTable } = useTable();
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -20,7 +19,7 @@ const FavouriteButton: FunctionComponent<IProps> = ({ contact, reload }) => {
         setLoading(true);
         const res = await client.apiContactsSetfavouritePost({ id, favourite: !favourite });
         if (res.content) {
-            reload();
+            reloadTable();
         }
         setLoading(false);
     };

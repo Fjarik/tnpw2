@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { Formik, Form } from "formik";
 import { Button, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import ContactEditForm from "./ContactEditForm";
-import { useClient } from "@lib/ClientContext";
+import { useTable } from "@lib/TableContext";
 import { format } from "date-fns";
 
 const validationSchema = yup.object({
@@ -18,11 +18,9 @@ const validationSchema = yup.object({
 
 interface IProps {
     contact: Contact;
-    onClose: () => void;
-    onSave: (contact: Contact) => Promise<void>;
 }
-const ContactForm: FunctionComponent<IProps> = ({ contact, onClose, onSave }) => {
-    const client = useClient();
+const ContactForm: FunctionComponent<IProps> = ({ contact }) => {
+    const { client, onClose, onSave } = useTable();
 
     const initialContact: Contact = {
         ...contact,
