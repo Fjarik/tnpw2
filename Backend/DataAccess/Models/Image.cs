@@ -11,9 +11,6 @@ namespace DataAccess.Models
 {
 	public class Image
 	{
-		[BsonId]
-		public Guid Id { get; set; }
-
 		[Required]
 		public string Base64 { get; set; }
 

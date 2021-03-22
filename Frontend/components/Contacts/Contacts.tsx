@@ -3,9 +3,10 @@ import MaterialTable, { Action, Column, MaterialTableProps, Options, Query, Quer
 import ContactDialog, { ContactDialogProps } from "./ContactDialog";
 import { useSession } from "next-auth/client";
 import { Contact, getClient } from "@services";
-import Picture from "./Picture";
+import Picture from "@components/Picture/Picture";
 import { NIL } from "uuid";
-
+import FavouriteButton from "./FavouriteButton";
+import { ClientContext } from "@lib/ClientContext";
 
 const Contacts: FunctionComponent = () => {
 
@@ -23,6 +24,20 @@ const Contacts: FunctionComponent = () => {
 
     const client = getClient(session.accessToken);
 
+    const sort = ({ favourite: fOne, firstName: fnOne }: Contact, { favourite: fTwo, firstName: fnTwo }: Contact): number => {
+        if (fOne && !fTwo) {
+            return -1;
+        } else if (!fOne && fTwo) {
+            return 1;
+        }
+        if (fnOne > fnTwo) {
+            return 1;
+        } else if (fnOne < fnTwo) {
+            return -1;
+        }
+        return 0;
+    };
+
     const getContactsAsync = async (query: Query<Contact>): Promise<QueryResult<Contact>> => {
         const res = await client.apiContactsGetallGet();
         if (res.errors && res.errors.length > 0) {
@@ -35,8 +50,13 @@ const Contacts: FunctionComponent = () => {
                 totalCount: query.totalCount,
             };
         }
+        const contacts = res.content;
+        if (selectedContact) {
+            setSelectedContact(contacts.find(x => x.id === selectedContact.id) ?? null);
+        }
+
         return {
-            data: res.content,
+            data: contacts.sort(sort),
             page: query.page,
             totalCount: res.content.length
         };
@@ -89,6 +109,16 @@ const Contacts: FunctionComponent = () => {
         { field: "lastName", title: "Lastname", },
         { field: "email", title: "Email", },
         { field: "number", title: "Number", },
+        {
+            field: "favourite",
+            title: "",
+            disableClick: true,
+            // eslint-disable-next-line react/display-name
+            render: (data) => (<FavouriteButton contact={data} client={client} />),
+            cellStyle: {
+                "width": "4%",
+            },
+        }
     ];
 
     const actions: Action<Contact>[] = [
@@ -123,7 +153,7 @@ const Contacts: FunctionComponent = () => {
                     firstName: "",
                     lastName: "",
                     id: NIL,
-                    birthDate: undefined,
+                    birthDate: null,
                 } as Contact);
                 setIsEdit(true);
             },
@@ -150,17 +180,19 @@ const Contacts: FunctionComponent = () => {
         onClose: handleDialogClose,
         onSave: handleSave,
         contact: selectedContact,
-        client: client,
         switchToEdit: () => setIsEdit(true),
+        reload: reloadTable,
         isEdit,
     };
 
     return (
         <div>
-            <MaterialTable tableRef={tableRef} {...tableProps} />
-            {dialogProps &&
-                <ContactDialog {...dialogProps} />
-            }
+            <ClientContext.Provider value={{ client }}>
+                <MaterialTable tableRef={tableRef} {...tableProps} />
+                {dialogProps &&
+                    <ContactDialog {...dialogProps} />
+                }
+            </ClientContext.Provider>
         </div>
     );
 };

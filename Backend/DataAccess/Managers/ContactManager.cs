@@ -127,7 +127,7 @@ namespace DataAccess.Managers
 				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
 				throw new ArgumentNullException(nameof(file), "Invalid file length.");
 			}
-			if (file.Length > 1024) {
+			if (file.Length > 500000) {
 				_logger.LogInformation("ContactManager.UpdatePictureAsync()............. Done");
 				throw new ArgumentOutOfRangeException(nameof(file), "File exceeded maximum size.");
 			}

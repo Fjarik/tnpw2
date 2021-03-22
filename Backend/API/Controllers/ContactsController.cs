@@ -76,6 +76,7 @@ namespace API.Controllers
 
 		[HttpPost]
 		[Route("photo")]
+		[Consumes("multipart/form-data")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
 		[SwaggerResponse(400, Type = typeof(ApiResult<bool>))]

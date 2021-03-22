@@ -25,9 +25,11 @@ const Picture: FunctionComponent<IProps> = ({ contact }) => {
         );
     }
 
-    const { base64 } = image;
+    const { base64, format } = image;
+    const src = "data:" + format + ";base64, " + base64;
+
     return (
-        <Avatar className={classes.orange} src={base64} />
+        <Avatar src={src} />
     );
 };
 

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import useFetch from "use-http";
 import { Typography } from "@material-ui/core";
 
@@ -22,7 +22,7 @@ const NameDay: FunctionComponent<IProps> = ({ firstName }) => {
     const { loading, error, data } = useFetch<INameDayResult>(url, {}, []);
 
     if (loading) {
-        return <CircularProgress />;
+        return <LinearProgress />;
     }
 
     if (error) {

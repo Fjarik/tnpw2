@@ -18,10 +18,9 @@ namespace DataAccess.Models.API
 		[Required]
 		public string FirstName { get; set; }
 
-		[Required]
 		public string LastName { get; set; }
 
-		[EmailAddress]
+		//[EmailAddress]
 		public string Email { get; set; }
 
 		public string NickName { get; set; }
@@ -34,6 +33,9 @@ namespace DataAccess.Models.API
 
 		public IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(
 			ValidationContext validationContext) {
+			if (string.IsNullOrWhiteSpace(LastName)) {
+				LastName = null;
+			}
 			if (string.IsNullOrWhiteSpace(NickName)) {
 				NickName = null;
 			}

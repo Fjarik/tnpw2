@@ -17,9 +17,6 @@ namespace DataAccess.Validators
 			if (string.IsNullOrWhiteSpace(contact.FirstName)) {
 				return new ValidationResult(new ArgumentNullException(nameof(contact.FirstName)));
 			}
-			if (string.IsNullOrWhiteSpace(contact.LastName)) {
-				return new ValidationResult(new ArgumentNullException(nameof(contact.LastName)));
-			}
 			return new ValidationResult();
 		}
 

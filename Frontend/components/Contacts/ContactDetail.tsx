@@ -1,13 +1,13 @@
 import { FunctionComponent } from "react";
 import { Contact } from "@services";
 import { Button, DialogActions, DialogContent, DialogTitle, Grid, Theme, Typography, makeStyles, createStyles } from "@material-ui/core";
-import Picture from "./Picture";
 import PhoneIcon from "@material-ui/icons/Phone";
 import CakeIcon from "@material-ui/icons/Cake";
 import ContactDetailRow from "./ContactDetailRow";
 import EmailIcon from "@material-ui/icons/Email";
 import EventIcon from "@material-ui/icons/Event";
 import NameDay from "./NameDay";
+import PictureForm from "@components/Picture/PictureForm";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -25,21 +25,23 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProps {
     contact: Contact;
     onClose: () => void;
+    reload: () => void;
     switchToEdit: () => void;
 }
-const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEdit }) => {
+const ContactDetail: FunctionComponent<IProps> = ({ contact, onClose, switchToEdit, reload }) => {
     const classes = useStyles();
 
     const { firstName, lastName, number, nickName, birthDate, email } = contact;
 
     const fullName = firstName + (lastName ? (" " + lastName) : "") + (nickName ? ("," + nickName) : "");
 
+
     return (
         <div>
             <DialogTitle>
                 <Grid container>
                     <Grid item xs="auto" className={classes.avatar}>
-                        <Picture contact={contact} />
+                        <PictureForm contact={contact} reload={reload} />
                     </Grid>
                     <Grid item className={classes.text}>
                         <Typography variant="h5">

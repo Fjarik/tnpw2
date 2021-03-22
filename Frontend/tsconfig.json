@@ -20,10 +20,6 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "typeRoots": [
-      "./custom_typings",
-      "./node_modules/@types",
-    ],
     "baseUrl": "./",
     "paths": {
       "@components/*": [
@@ -32,6 +28,9 @@
       "@services": [
         "services"
       ],
+      "@lib/*": [
+        "lib/*"
+      ]
     }
   },
   "exclude": [

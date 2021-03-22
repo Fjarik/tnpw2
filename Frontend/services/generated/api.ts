@@ -79,49 +79,6 @@ export class RequiredError extends Error {
 /**
  * 
  * @export
- * @interface Body
- */
-export interface Body {
-    /**
-     * 
-     * @type {string}
-     * @memberof Body
-     */
-    contentType?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Body
-     */
-    contentDisposition?: string;
-    /**
-     * 
-     * @type {{ [key: string]: Array<string>; }}
-     * @memberof Body
-     */
-    headers?: { [key: string]: Array<string>; };
-    /**
-     * 
-     * @type {number}
-     * @memberof Body
-     */
-    length?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Body
-     */
-    name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Body
-     */
-    fileName?: string;
-}
-/**
- * 
- * @export
  * @interface BooleanApiResult
  */
 export interface BooleanApiResult {
@@ -161,7 +118,7 @@ export interface Contact {
      * @type {string}
      * @memberof Contact
      */
-    lastName: string;
+    lastName?: string;
     /**
      * 
      * @type {string}
@@ -185,7 +142,7 @@ export interface Contact {
      * @type {Date}
      * @memberof Contact
      */
-    birthDate?: Date;
+    birthDate: Date | null;
     /**
      * 
      * @type {string}
@@ -203,7 +160,7 @@ export interface Contact {
      * @type {boolean}
      * @memberof Contact
      */
-    favourite?: boolean;
+    favourite: boolean;
 }
 /**
  * 
@@ -266,7 +223,7 @@ export interface ContactModel {
      * @type {string}
      * @memberof ContactModel
      */
-    lastName: string;
+    lastName?: string;
     /**
      * 
      * @type {string}
@@ -290,7 +247,7 @@ export interface ContactModel {
      * @type {Date}
      * @memberof ContactModel
      */
-    birthDate?: Date;
+    birthDate?: Date | null;
 }
 /**
  * 
@@ -317,12 +274,6 @@ export interface FavouriteContactModel {
  * @interface Image
  */
 export interface Image {
-    /**
-     * 
-     * @type {string}
-     * @memberof Image
-     */
-    id?: string;
     /**
      * 
      * @type {string}
@@ -791,12 +742,12 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @param {Body} [body] 
+         * @param {File} [body] 
          * @param {string} [contactId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsPhotoPost(body?: Body, contactId?: string, options: any = {}): FetchArgs {
+        apiContactsPhotoPost(body?: File, contactId?: string, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/photo`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -815,14 +766,13 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['contactId'] = contactId;
             }
 
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             // delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"Body" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
+            const formData = new FormData();
+            formData.append("picture", body as Blob, body?.name);
+            localVarRequestOptions.body = formData;
 
             return {
                 url: url.format(localVarUrlObj),
@@ -946,12 +896,12 @@ export const ContactsApiFp = function (configuration?: Configuration) {
         },
         /**
          * 
-         * @param {Body} [body] 
+         * @param {File} [body] 
          * @param {string} [contactId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsPhotoPost(body?: Body, contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+        apiContactsPhotoPost(body?: File, contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
             const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsPhotoPost(body, contactId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1027,12 +977,12 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
         },
         /**
          * 
-         * @param {Body} [body] 
+         * @param {File} [body] 
          * @param {string} [contactId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsPhotoPost(body?: Body, contactId?: string, options?: any) {
+        apiContactsPhotoPost(body?: File, contactId?: string, options?: any) {
             return ContactsApiFp(configuration).apiContactsPhotoPost(body, contactId, options)(fetch, basePath);
         },
         /**
@@ -1090,13 +1040,13 @@ export interface ContactsApiInterface {
 
     /**
      * 
-     * @param {Body} [body] 
+     * @param {File} [body] 
      * @param {string} [contactId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsPhotoPost(body?: Body, contactId?: string, options?: any): Promise<BooleanApiResult>;
+    apiContactsPhotoPost(body?: File, contactId?: string, options?: any): Promise<BooleanApiResult>;
 
     /**
      * 
@@ -1161,13 +1111,13 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
 
     /**
      * 
-     * @param {Body} [body] 
+     * @param {File} [body] 
      * @param {string} [contactId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsPhotoPost(body?: Body, contactId?: string, options?: any) {
+    public apiContactsPhotoPost(body?: File, contactId?: string, options?: any) {
         return ContactsApiFp(this.configuration).apiContactsPhotoPost(body, contactId, options)(this.fetch, this.basePath);
     }
 
