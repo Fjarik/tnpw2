@@ -17,7 +17,7 @@ const FavouriteButton: FunctionComponent<IProps> = ({ contact }) => {
 
     const onFavouriteClick = async (): Promise<void> => {
         setLoading(true);
-        const res = await client.apiContactsSetfavouritePost({ id, favourite: !favourite });
+        const res = await client.setContactAsFavourite({ id, favourite: !favourite });
         if (res.content) {
             reloadTable();
         }

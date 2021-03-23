@@ -38,7 +38,7 @@ const PictureForm: FunctionComponent<IProps> = ({ contact }) => {
         const file = event?.target?.files?.item(0);
         if (file) {
             setLoading(true);
-            const res = await client.apiContactsPhotoPost(file, id);
+            const res = await client.setContactPhoto(file, id);
             if (res) {
                 reloadTable();
             }
@@ -48,7 +48,7 @@ const PictureForm: FunctionComponent<IProps> = ({ contact }) => {
 
     const deletePicture = async (): Promise<void> => {
         setLoading(true);
-        const res = await client.apiContactsDelphotoDelete(id);
+        const res = await client.deletePhoto(id);
         if (res) {
             reloadTable();
         }

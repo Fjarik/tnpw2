@@ -59,7 +59,7 @@ namespace API.Controllers
 			return new ApiActionResult<Contact>(res);
 		}
 
-		[HttpPost]
+		[HttpPatch]
 		[Route("setfavourite")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[SwaggerResponse(200, Type = typeof(ApiResult<bool>))]
@@ -74,7 +74,7 @@ namespace API.Controllers
 			return new ApiActionResult<bool>(res);
 		}
 
-		[HttpPost]
+		[HttpPatch]
 		[Route("photo")]
 		[Consumes("multipart/form-data")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

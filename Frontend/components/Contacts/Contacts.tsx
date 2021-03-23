@@ -49,7 +49,7 @@ const Contacts: FunctionComponent = () => {
     };
 
     const getContactsAsync = async (query: Query<Contact>): Promise<QueryResult<Contact>> => {
-        const res = await client.apiContactsGetallGet();
+        const res = await client.getAllContacts();
         if (res.errors && res.errors.length > 0) {
             console.error(res.errors);
         }
@@ -88,7 +88,7 @@ const Contacts: FunctionComponent = () => {
 
     const handleDelete = async (contact: Contact): Promise<void> => {
         console.log("Deleted: ", contact);
-        const res = await client.apiContactsDeleteDelete(contact.id);
+        const res = await client.deleteContact(contact.id);
 
         if (res.errors && res.errors.length > 0) {
             console.error(res.errors);

@@ -569,7 +569,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsCreateorupdatePost(body?: ContactModel, options: any = {}): FetchArgs {
+        createOrUpdate(body?: ContactModel, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/createorupdate`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -604,7 +604,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsDeleteDelete(id?: string, options: any = {}): FetchArgs {
+        deleteContact(id?: string, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/delete`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -639,7 +639,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsDelphotoDelete(contactId?: string, options: any = {}): FetchArgs {
+        deletePhoto(contactId?: string, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/delphoto`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -673,7 +673,7 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsGetallGet(options: any = {}): FetchArgs {
+        getAllContacts(options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/getall`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -705,10 +705,10 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsPhotoPost(body?: File, contactId?: string, options: any = {}): FetchArgs {
+        setContactPhoto(body?: File, contactId?: string, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/photo`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -743,10 +743,10 @@ export const ContactsApiFetchParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsSetfavouritePost(body?: FavouriteContactModel, options: any = {}): FetchArgs {
+        setContactAsFavourite(body?: FavouriteContactModel, options: any = {}): FetchArgs {
             const localVarPath = `/api/Contacts/setfavourite`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -787,8 +787,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsCreateorupdatePost(body?: ContactModel, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ContactApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsCreateorupdatePost(body, options);
+        createOrUpdate(body?: ContactModel, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ContactApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).createOrUpdate(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -805,8 +805,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsDeleteDelete(id?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsDeleteDelete(id, options);
+        deleteContact(id?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).deleteContact(id, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -823,8 +823,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsDelphotoDelete(contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsDelphotoDelete(contactId, options);
+        deletePhoto(contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).deletePhoto(contactId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -840,8 +840,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsGetallGet(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ContactListApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsGetallGet(options);
+        getAllContacts(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ContactListApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).getAllContacts(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -859,8 +859,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsPhotoPost(body?: File, contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsPhotoPost(body, contactId, options);
+        setContactPhoto(body?: File, contactId?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).setContactPhoto(body, contactId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -877,8 +877,8 @@ export const ContactsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
-            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).apiContactsSetfavouritePost(body, options);
+        setContactAsFavourite(body?: FavouriteContactModel, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BooleanApiResult> {
+            const localVarFetchArgs = ContactsApiFetchParamCreator(configuration).setContactAsFavourite(body, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -905,7 +905,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsCreateorupdatePost(body?: ContactModel, options?: any) {
-            return ContactsApiFp(configuration).apiContactsCreateorupdatePost(body, options)(fetch, basePath);
+            return ContactsApiFp(configuration).createOrUpdate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -914,7 +914,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsDeleteDelete(id?: string, options?: any) {
-            return ContactsApiFp(configuration).apiContactsDeleteDelete(id, options)(fetch, basePath);
+            return ContactsApiFp(configuration).deleteContact(id, options)(fetch, basePath);
         },
         /**
          * 
@@ -923,7 +923,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsDelphotoDelete(contactId?: string, options?: any) {
-            return ContactsApiFp(configuration).apiContactsDelphotoDelete(contactId, options)(fetch, basePath);
+            return ContactsApiFp(configuration).deletePhoto(contactId, options)(fetch, basePath);
         },
         /**
          * 
@@ -931,7 +931,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsGetallGet(options?: any) {
-            return ContactsApiFp(configuration).apiContactsGetallGet(options)(fetch, basePath);
+            return ContactsApiFp(configuration).getAllContacts(options)(fetch, basePath);
         },
         /**
          * 
@@ -941,7 +941,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsPhotoPost(body?: File, contactId?: string, options?: any) {
-            return ContactsApiFp(configuration).apiContactsPhotoPost(body, contactId, options)(fetch, basePath);
+            return ContactsApiFp(configuration).setContactPhoto(body, contactId, options)(fetch, basePath);
         },
         /**
          * 
@@ -950,7 +950,7 @@ export const ContactsApiFactory = function (configuration?: Configuration, fetch
          * @throws {RequiredError}
          */
         apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any) {
-            return ContactsApiFp(configuration).apiContactsSetfavouritePost(body, options)(fetch, basePath);
+            return ContactsApiFp(configuration).setContactAsFavourite(body, options)(fetch, basePath);
         },
     };
 };
@@ -968,7 +968,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsCreateorupdatePost(body?: ContactModel, options?: any): Promise<ContactApiResult>;
+    createOrUpdate(body?: ContactModel, options?: any): Promise<ContactApiResult>;
 
     /**
      * 
@@ -977,7 +977,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsDeleteDelete(id?: string, options?: any): Promise<BooleanApiResult>;
+    deleteContact(id?: string, options?: any): Promise<BooleanApiResult>;
 
     /**
      * 
@@ -986,7 +986,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsDelphotoDelete(contactId?: string, options?: any): Promise<BooleanApiResult>;
+    deletePhoto(contactId?: string, options?: any): Promise<BooleanApiResult>;
 
     /**
      * 
@@ -994,7 +994,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsGetallGet(options?: any): Promise<ContactListApiResult>;
+    getAllContacts(options?: any): Promise<ContactListApiResult>;
 
     /**
      * 
@@ -1004,7 +1004,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsPhotoPost(body?: File, contactId?: string, options?: any): Promise<BooleanApiResult>;
+    setContactPhoto(body?: File, contactId?: string, options?: any): Promise<BooleanApiResult>;
 
     /**
      * 
@@ -1013,7 +1013,7 @@ export interface ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApiInterface
      */
-    apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any): Promise<BooleanApiResult>;
+    setContactAsFavourite(body?: FavouriteContactModel, options?: any): Promise<BooleanApiResult>;
 
 }
 
@@ -1031,8 +1031,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsCreateorupdatePost(body?: ContactModel, options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsCreateorupdatePost(body, options)(this.fetch, this.basePath);
+    public createOrUpdate(body?: ContactModel, options?: any) {
+        return ContactsApiFp(this.configuration).createOrUpdate(body, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1042,8 +1042,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsDeleteDelete(id?: string, options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsDeleteDelete(id, options)(this.fetch, this.basePath);
+    public deleteContact(id?: string, options?: any) {
+        return ContactsApiFp(this.configuration).deleteContact(id, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1053,8 +1053,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsDelphotoDelete(contactId?: string, options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsDelphotoDelete(contactId, options)(this.fetch, this.basePath);
+    public deletePhoto(contactId?: string, options?: any) {
+        return ContactsApiFp(this.configuration).deletePhoto(contactId, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1063,8 +1063,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsGetallGet(options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsGetallGet(options)(this.fetch, this.basePath);
+    public getAllContacts(options?: any) {
+        return ContactsApiFp(this.configuration).getAllContacts(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1075,8 +1075,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsPhotoPost(body?: File, contactId?: string, options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsPhotoPost(body, contactId, options)(this.fetch, this.basePath);
+    public setContactPhoto(body?: File, contactId?: string, options?: any) {
+        return ContactsApiFp(this.configuration).setContactPhoto(body, contactId, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1086,8 +1086,8 @@ export class ContactsApi extends BaseAPI implements ContactsApiInterface {
      * @throws {RequiredError}
      * @memberof ContactsApi
      */
-    public apiContactsSetfavouritePost(body?: FavouriteContactModel, options?: any) {
-        return ContactsApiFp(this.configuration).apiContactsSetfavouritePost(body, options)(this.fetch, this.basePath);
+    public setContactAsFavourite(body?: FavouriteContactModel, options?: any) {
+        return ContactsApiFp(this.configuration).setContactAsFavourite(body, options)(this.fetch, this.basePath);
     }
 
 }
@@ -1141,7 +1141,7 @@ export const UsersApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiUsersMeGet(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<UserModel> {
+        getMe(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<UserModel> {
             const localVarFetchArgs = UsersApiFetchParamCreator(configuration).apiUsersMeGet(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1168,7 +1168,7 @@ export const UsersApiFactory = function (configuration?: Configuration, fetch?: 
          * @throws {RequiredError}
          */
         apiUsersMeGet(options?: any) {
-            return UsersApiFp(configuration).apiUsersMeGet(options)(fetch, basePath);
+            return UsersApiFp(configuration).getMe(options)(fetch, basePath);
         },
     };
 };
@@ -1185,7 +1185,7 @@ export interface UsersApiInterface {
      * @throws {RequiredError}
      * @memberof UsersApiInterface
      */
-    apiUsersMeGet(options?: any): Promise<UserModel>;
+    getMe(options?: any): Promise<UserModel>;
 
 }
 
@@ -1202,8 +1202,8 @@ export class UsersApi extends BaseAPI implements UsersApiInterface {
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public apiUsersMeGet(options?: any) {
-        return UsersApiFp(this.configuration).apiUsersMeGet(options)(this.fetch, this.basePath);
+    public getMe(options?: any) {
+        return UsersApiFp(this.configuration).getMe(options)(this.fetch, this.basePath);
     }
 
 }
