@@ -39,7 +39,7 @@ const ContactForm: FunctionComponent<IProps> = ({ contact }) => {
         const { birthDate } = values;
         const date = birthDate ? format(new Date(birthDate), "yyyy-MM-dd") : null;
 
-        const res = await client.apiContactsCreateorupdatePost({
+        const res = await client.createOrUpdate({
             ...values,
             birthDate: date
         });
