@@ -8,7 +8,7 @@ export const withAuthServerSideProps = (getServerSidePropsFn?: (context: GetServ
             return {
                 redirect: {
                     permanent: false,
-                    destination: "/api/auth/signin"
+                    destination: "/auth/signin"
                 }
             };
         }
