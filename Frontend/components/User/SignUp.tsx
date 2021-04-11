@@ -85,7 +85,7 @@ const Register: FunctionComponent = () => {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign In
+                            Sign up
                             </Button>
                         <Link href="/auth/signin" variant="body2">
                             {"Already have an account? Sign In"}
