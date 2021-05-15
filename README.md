@@ -1,2 +1,4 @@
 # Contacts - TNPW2
-Sutdentský projekt Kontakty - Technologie pro publikování na Webu II
+Studentský projekt Kontakty - Technologie pro publikování na Webu II
+
+This repository is achived. Project is no longer used.
